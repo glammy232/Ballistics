@@ -1,0 +1,105 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\kirca\\CPA_Store\\Demo\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A77DEB61-50BA-3D2B-BA85-CD07C2DB2C66}|Assembly-CSharp.csproj|c:\\users\\kirca\\cpa_store\\demo\\assets\\_project\\develop\\game\\gamecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A77DEB61-50BA-3D2B-BA85-CD07C2DB2C66}|Assembly-CSharp.csproj|solutionrelative:assets\\_project\\develop\\game\\gamecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A77DEB61-50BA-3D2B-BA85-CD07C2DB2C66}|Assembly-CSharp.csproj|c:\\users\\kirca\\cpa_store\\demo\\assets\\_project\\develop\\game\\bullet.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A77DEB61-50BA-3D2B-BA85-CD07C2DB2C66}|Assembly-CSharp.csproj|solutionrelative:assets\\_project\\develop\\game\\bullet.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A77DEB61-50BA-3D2B-BA85-CD07C2DB2C66}|Assembly-CSharp.csproj|C:\\Users\\kirca\\CPA_Store\\Demo\\assets\\_project\\develop\\game\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A77DEB61-50BA-3D2B-BA85-CD07C2DB2C66}|Assembly-CSharp.csproj|solutionrelative:assets\\_project\\develop\\game\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A77DEB61-50BA-3D2B-BA85-CD07C2DB2C66}|Assembly-CSharp.csproj|c:\\users\\kirca\\cpa_store\\demo\\assets\\_project\\develop\\game\\messagepanel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A77DEB61-50BA-3D2B-BA85-CD07C2DB2C66}|Assembly-CSharp.csproj|solutionrelative:assets\\_project\\develop\\game\\messagepanel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A77DEB61-50BA-3D2B-BA85-CD07C2DB2C66}|Assembly-CSharp.csproj|C:\\Users\\kirca\\CPA_Store\\Demo\\assets\\_project\\develop\\game\\timer\\timermodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A77DEB61-50BA-3D2B-BA85-CD07C2DB2C66}|Assembly-CSharp.csproj|solutionrelative:assets\\_project\\develop\\game\\timer\\timermodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Bullet.cs",
+              "DocumentMoniker": "C:\\Users\\kirca\\CPA_Store\\Demo\\Assets\\_Project\\Develop\\Game\\Bullet.cs",
+              "RelativeDocumentMoniker": "Assets\\_Project\\Develop\\Game\\Bullet.cs",
+              "ToolTip": "C:\\Users\\kirca\\CPA_Store\\Demo\\Assets\\_Project\\Develop\\Game\\Bullet.cs",
+              "RelativeToolTip": "Assets\\_Project\\Develop\\Game\\Bullet.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAADcAAAAgAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-18T11:18:37.728Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "MessagePanel.cs",
+              "DocumentMoniker": "C:\\Users\\kirca\\CPA_Store\\Demo\\Assets\\_Project\\Develop\\Game\\MessagePanel.cs",
+              "RelativeDocumentMoniker": "Assets\\_Project\\Develop\\Game\\MessagePanel.cs",
+              "ToolTip": "C:\\Users\\kirca\\CPA_Store\\Demo\\Assets\\_Project\\Develop\\Game\\MessagePanel.cs",
+              "RelativeToolTip": "Assets\\_Project\\Develop\\Game\\MessagePanel.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAAAuAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-18T10:46:33.123Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "TimerModel.cs",
+              "DocumentMoniker": "C:\\Users\\kirca\\CPA_Store\\Demo\\Assets\\_Project\\Develop\\Game\\Timer\\TimerModel.cs",
+              "RelativeDocumentMoniker": "Assets\\_Project\\Develop\\Game\\Timer\\TimerModel.cs",
+              "ToolTip": "C:\\Users\\kirca\\CPA_Store\\Demo\\Assets\\_Project\\Develop\\Game\\Timer\\TimerModel.cs",
+              "RelativeToolTip": "Assets\\_Project\\Develop\\Game\\Timer\\TimerModel.cs",
+              "ViewState": "AQIAACUAAAAAAAAAAAAgwCAAAAAgAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-17T14:32:29.7Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "GameController.cs",
+              "DocumentMoniker": "C:\\Users\\kirca\\CPA_Store\\Demo\\Assets\\_Project\\Develop\\Game\\GameController.cs",
+              "RelativeDocumentMoniker": "Assets\\_Project\\Develop\\Game\\GameController.cs",
+              "ToolTip": "C:\\Users\\kirca\\CPA_Store\\Demo\\Assets\\_Project\\Develop\\Game\\GameController.cs",
+              "RelativeToolTip": "Assets\\_Project\\Develop\\Game\\GameController.cs",
+              "ViewState": "AQIAAGcAAAAAAAAAAAASwHwAAAAQAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-16T06:01:18.719Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Player.cs",
+              "DocumentMoniker": "C:\\Users\\kirca\\CPA_Store\\Demo\\Assets\\_Project\\Develop\\Game\\Player.cs",
+              "RelativeDocumentMoniker": "Assets\\_Project\\Develop\\Game\\Player.cs",
+              "ToolTip": "C:\\Users\\kirca\\CPA_Store\\Demo\\Assets\\_Project\\Develop\\Game\\Player.cs",
+              "RelativeToolTip": "Assets\\_Project\\Develop\\Game\\Player.cs",
+              "ViewState": "AQIAABcAAAAAAAAAAAAvwDkAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-08T15:53:07.471Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,2 +1,5 @@
-$ git status
-# Ballistics/Library/
+/Library/
+/Logs/
+/obj/
+/Temp/
+/UserSettings/
