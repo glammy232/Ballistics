@@ -10,6 +10,10 @@ public class TimerModel : MonoBehaviour, INotifyPropertyChanged
 
     private event Action onTimerCompleted;
 
+    [SerializeField] private AudioClip _audio;
+
+    public AudioClip GetAudio => _audio;
+
     private int _time;
     private int time
     {
@@ -18,8 +22,6 @@ public class TimerModel : MonoBehaviour, INotifyPropertyChanged
         {
             _time = value;
 
-            NotifyPropertyChanged(nameof(_time));
-
             if (value <= 0)
             {
                 onTimerCompleted?.Invoke();
@@ -27,12 +29,19 @@ public class TimerModel : MonoBehaviour, INotifyPropertyChanged
                 if (_countTime != null)
                     StopCoroutine(_countTime);
             }
+
+            if (value <= 3)
+                _textColor = Color.red;
+
+            NotifyPropertyChanged(nameof(_time));
         }
     }
 
-    private bool _isWork = false;
+    private Color _textColor;
+    public Color GetColor => _textColor;
 
-    public bool GetIsWork => _isWork;
+    [SerializeField] private AudioSource _audioSource;
+    public AudioSource GetAudioSource => _audioSource;
 
     public int GetTime => _time;
 
@@ -45,19 +54,25 @@ public class TimerModel : MonoBehaviour, INotifyPropertyChanged
 
         this.time = time;
 
-        onTimerCompleted = action + delegate { _isWork = false; };
+        onTimerCompleted = action;
+
+        _textColor = Color.white;
 
         _countTime = StartCoroutine(CountTime());
 
-        _isWork = true;
+        NotifyPropertyChanged(nameof(_countTime));
     }
 
     public void StopTimer() 
     {
-        if(_countTime != null)
+        _textColor = Color.white;
+
+        if (_countTime != null)
             StopCoroutine(_countTime);
 
         onTimerCompleted = null;
+
+        NotifyPropertyChanged();
     }
 
     private IEnumerator CountTime()

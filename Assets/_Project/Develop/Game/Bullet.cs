@@ -4,17 +4,20 @@ public class Bullet : MonoBehaviour
 {
     [SerializeField] private Rigidbody _rb;
 
-    private BulletType _type;
+    [SerializeField] private BulletType _type;
 
     [SerializeField] private float _groundYPosition;
 
-    public void Initialize(float maxHeight, float startSpeed, float angle, BulletType type)
+    private Character _parentCharacter;
+
+    [SerializeField] private GameObject _explosionTemplate;
+    public void Initialize(float maxHeight, float startSpeed, float angle, Character parent)
     {
         maxHeight = SettingsModel.MaxHeight;
 
-        _rb.velocity = Vector3.zero;
+        _parentCharacter = parent;
 
-        _type = type;
+        _rb.velocity = Vector3.zero;
 
         Vector3 startDirection = Ballistics.StartDirection(maxHeight, startSpeed);
 
@@ -47,20 +50,25 @@ public class Bullet : MonoBehaviour
 
     private void OnCollisionEnter(Collision collider)
     {
-        if (collider.gameObject.TryGetComponent(out Player player))
+        Camera.main.GetComponent<AudioSource>().PlayOneShot(Resources.Load<AudioClip>("click"));
+
+        Instantiate(_explosionTemplate, transform.position, Quaternion.identity);
+
+        if (collider.gameObject.TryGetComponent(out Character player) && player != _parentCharacter)
         {
             if (_type == BulletType.Tomato)
-                player.Health -= Player.MAX_HEALTH / 10;
+                player.Health -= player.GetMaxHealth / 10;
             else if(_type == BulletType.Poop)
-                player.Health -= Player.MAX_HEALTH / 2;
+                player.Health -= player.GetMaxHealth / 2;
 
-            player.CanFire = true;
-
-            player.GetComponent<Renderer>().material.color = Color.black;
+            if (player.Health <= 0)
+                _parentCharacter.Kills++;
         }
         if (collider.gameObject.TryGetComponent(out Bullet bullet) == false)
             GameController.Instance.DestroyBullet(this);
     }
+    
+    public void SetType(BulletType type) => _type = type;
 
     public enum BulletType
     {

@@ -9,6 +9,6 @@ public class TimerViewModel : MonoBehaviour
     
     public void Initialize()
     {
-        _model.PropertyChanged += delegate { _view.UpdateView(_model.GetTime); };
+        _model.PropertyChanged += delegate { _view.UpdateView(_model); };
     }
 }

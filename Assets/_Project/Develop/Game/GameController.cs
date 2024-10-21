@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
@@ -11,12 +13,13 @@ public class GameController : MonoBehaviour
     public static GameController Instance;
 
     [SerializeField] private Player _playerTemplate;
+    [SerializeField] private Bot _botTemplate;
 
     [SerializeField] private Transform _ground;
 
-    public List<Bullet> Bullets;
+    private List<Character> _characters;
 
-    private List<Player> _players;
+    private int[] _charactersKills = new int[6];
 
     [SerializeField] private TMP_Text _roundText;
 
@@ -31,11 +34,17 @@ public class GameController : MonoBehaviour
         }
     }
 
-    private Player _currentPlayer;
+    private Character _currentCharacter;
 
-    private Player _playerToKill;
+    private Character _characterToKill;
 
     [SerializeField] private MessagePanel _messagePanel;
+
+    [SerializeField] private Button _exitButton;
+
+    [SerializeField] private GameObject _endCanvas;
+
+    [SerializeField] private TMP_Text _resultValuesText;
 
     #region Timer
 
@@ -53,114 +62,183 @@ public class GameController : MonoBehaviour
     {
         Instance = this;
 
+        _exitButton.onClick.AddListener(delegate { SceneManager.LoadSceneAsync("Menu"); });
+        
         CreatePlayers(numOfPlayers);
 
         ArrangePlayers();
 
         ResetMap();
 
+        GivePoopToRandomCharacter();
+
         StartRound();
     }
 
     private void CreatePlayers(int numOfPlayers)
     {
-        _players = new List<Player>();
+        _characters = new List<Character>();
 
         for (int i = 0; i < numOfPlayers; i++)
         {
-            Player newPlayer = Instantiate(_playerTemplate);
+            Character newCharacter;
 
-            newPlayer.Initialize(_fields[i], i + 1);
+            if (i == 0)
+                newCharacter = Instantiate(_playerTemplate);
+            else
+                newCharacter = Instantiate(_botTemplate);
 
-            _players.Add(newPlayer);
+            InitializationValueObject valueObject = new InitializationValueObject(_fields[i], i + 1, SettingsModel.FireCooldown, 0f, 100f, 100f, 100, SettingsModel.SpeedKoaf);
+
+            newCharacter.Initialize(valueObject);
+
+            _characters.Add(newCharacter);
         }
     }
 
     private void ArrangePlayers()
     {
-        Transform[] playersTransforms = new Transform[_players.Count];
+        Transform[] charactersTransforms = new Transform[_characters.Count];
 
-        for (int i = 0; i < playersTransforms.Length; i++)
-        {
-            playersTransforms[i] = _players[i].transform;
-        }
+        charactersTransforms[0] = _characters[5].transform;
+        charactersTransforms[1] = _characters[0].transform;
+        charactersTransforms[2] = _characters[4].transform;
+        charactersTransforms[3] = _characters[1].transform;
+        charactersTransforms[4] = _characters[3].transform;
+        charactersTransforms[5] = _characters[2].transform;
 
         PlayerPlacemaker playerPlacemaker = new PlayerPlacemaker();
 
-        playerPlacemaker.ArrangePlayers(playersTransforms, _ground.position, _ground.localScale, -2, 2, -2, 2);
+        playerPlacemaker.ArrangePlayers(charactersTransforms, _ground.position, _ground.localScale, -2, 2, -2, 2);
+
+        foreach (var character in _characters)
+        {
+            character.SetStartPosition(character.transform.position);
+        }
     }
 
     private void StartRound()
     {
         ResetMap();
 
+        if(_characters.Count == 2)
+        {
+            PreEndGame();
+            return;
+        }
+
+        PlayerPlacemaker playerPlacemaker = new PlayerPlacemaker();
+
+        BordersPlacement bordersPlacement = new BordersPlacement(2f, 2f, -2f, -2f);
+
+        playerPlacemaker.MovePlayersLittle(_characters, bordersPlacement);
+
         currentRound++;
 
         _messagePanel.AddMessage($"Раунд {currentRound}");
         _messagePanel.AddMessage("HATE!");
 
-        _currentPlayer = FindNextPlayer();
+        _currentCharacter = FindNextPlayer();
 
-        if (_currentPlayer == null)
+        if(_currentCharacter == _characterToKill)
         {
-            if (_playerToKill != null)
-                KillPlayer(_playerToKill);
+            if (_characterToKill != null)
+                KillCharacter(_characterToKill);
 
-            EndGame();
+            _currentCharacter = FindNextPlayer(true);
+
+            if (_currentCharacter == null)
+            {
+                if (_characterToKill != null)
+                    KillCharacter(_characterToKill);
+
+                PreEndGame();
+
+                return;
+            }
+
+            SetPlayerFireAbility(_currentCharacter, true);
+
+            _timer.StartTimer((int)SettingsModel.RoundTime, delegate
+            {
+                ResetMap();
+
+                if (_characterToKill == null)
+                    AddPlayerToKillHim(_currentCharacter, false);
+
+                StopRound();
+            });
+
+            return;
+        }
+
+        if (_currentCharacter == null)
+        {
+            if (_characterToKill != null)
+                KillCharacter(_characterToKill);
+
+            PreEndGame();
 
             return;
         }
         
-        SetPlayerFireAbility(_currentPlayer, true);
+        SetPlayerFireAbility(_currentCharacter, true);
 
         _timer.StartTimer((int)SettingsModel.RoundTime, delegate
         {
-            ResetMap();
-
-            if(_playerToKill == null)
-                AddPlayerToKillHim(_currentPlayer, false);
+            if(_characterToKill == null)
+                AddPlayerToKillHim(_currentCharacter, false);
             
             StopRound();
         });
 
-        if (_playerToKill != null)
-            KillPlayer(_playerToKill);
+        if (_characterToKill != null)
+            KillCharacter(_characterToKill);
     }
 
-    private Player FindNextPlayer()
+    private Character FindNextPlayer()
     {
-        if(_players.Count - 1 <= 1)
+        if(_characters.Count - 1 <= 1)
             return null;
 
-        if (_currentPlayer == null)
-            return _players[currentRound];
+        if (_currentCharacter == null && currentRound == 1)
+            return _characters[currentRound - 1];
 
-        if (_players.IndexOf(_currentPlayer) != _players.Count - 1)
+        if (_characters.IndexOf(_currentCharacter) != _characters.Count - 1)
         {
-            return _players[_players.IndexOf(_currentPlayer) + 1];
+            return _characters[_characters.IndexOf(_currentCharacter) + 1];
         }
-        else return _players[0];
+        else return _characters[0];
+    }
+
+    private Character FindNextPlayer(bool isNextAfterKilledPlayer)
+    {
+        return _characters[_characters.IndexOf(_currentCharacter) + 2];
     }
 
     private void ResetMap()// Подготавливает начальное состояние перед раундом
     {
-        if(Bullets.Count > 0)
+        foreach (var character in _characters)
         {
-            foreach (var bullet in Bullets)
+            if(character != _characterToKill)
+                character.GetComponent<Renderer>().material.color = Color.white;
+
+            character.CanFire = false;
+        }
+
+        Bullet[] bullets = GameObject.FindObjectsOfType<Bullet>();
+
+        if (bullets.Length > 0)
+        {
+            for(int i = 0; i < bullets.Length; i++)
             {
+                Bullet bullet = bullets[i];
                 DestroyBullet(bullet);
             }
         }
-
-        foreach (var player in _players)
-        {
-            player.GetComponent<Renderer>().material.color = Color.white;
-
-            player.CanFire = false;
-        }
     }
 
-    private void SetPlayerFireAbility(Player player, bool value)
+    private void SetPlayerFireAbility(Character player, bool value)
     {
         player.CanFire = value;
 
@@ -168,15 +246,21 @@ public class GameController : MonoBehaviour
             player.GetComponent<Renderer>().material.color = Color.green;
     }
 
-    public void KillPlayer(Player player)
+    public void KillCharacter(Character player)
     {
-        Field field = _fields[_players.IndexOf(player)];
+        Field field = _fields[_characters.IndexOf(player)];
 
-        _fields.Remove(field);  
+        field.HideHealthBar();
 
-        Destroy(field.gameObject);
+        _fields.Remove(field);
 
-        _players.Remove(player);
+        //Destroy(field.gameObject);
+
+        player.GetComponent<Renderer>().material.color = Color.black;
+
+        _charactersKills[player.ID-1] = player.Kills;
+
+        _characters.Remove(player);
 
         Destroy(player);
     }
@@ -187,19 +271,23 @@ public class GameController : MonoBehaviour
         {
             _timer.StopTimer();
 
-            ResetMap();
+            Time.timeScale = 0f;
         },
         delegate
         {
+            Time.timeScale = 1f;
+            
             StartRound();
         }));
     }
 
-    public void AddPlayerToKillHim(Player player, bool stopRound)
+    public void AddPlayerToKillHim(Character player, bool stopRound)
     {
-        _playerToKill = player;
+        _characterToKill = player;
 
-        _messagePanel.AddMessage($"Игрок {_playerToKill.ID} выбывает");
+        player.StartCoroutine(player.DeathAnimation());
+
+        _messagePanel.AddMessage($"Игрок {_characterToKill.ID} выбывает");
 
         if (stopRound) 
             StopRound();
@@ -207,23 +295,66 @@ public class GameController : MonoBehaviour
 
     public void DestroyBullet(Bullet bullet)
     {
-        if (Bullets.Contains(bullet))
-            Bullets.Remove(bullet);
-
-        Destroy(bullet.gameObject);
+        if(bullet.gameObject != null)
+            Destroy(bullet.gameObject);
     }
 
-    private void EndGame()
+    private void PreEndGame()
     {
-        Debug.Log("End");
-        //SceneManager.LoadScene("Menu");
+        StartCoroutine(EndGame(delegate
+        {
+            List<int> isDead = new List<int>();
+            for(int i = 0; i < _characters.Count; i++)
+            {
+                if (_characters[i].Health <= 0)
+                    isDead.Add(_characters[i].ID);
+            }
+            _endCanvas.gameObject.SetActive(true);
+
+            int final = 0;
+            if (_characters[0].ID == 1 && isDead.Contains(1) == false)
+            {
+                final = 10 + _charactersKills[0];
+                _resultValuesText.text = $"Победа: 10\nВыбил: {_charactersKills[0]}\n\nИтог: {final}";
+                UserData.Kills += _charactersKills[0];
+                UserData.Wins += 1;
+            }
+            else
+            {
+                final = _charactersKills[0] - 1;
+
+                if (final < 0)
+                    final = 0;
+
+                _resultValuesText.text = $"Поражение: -1\nВыбил: {_charactersKills[0]}\n\nИтог: {final}";
+                UserData.Kills += _charactersKills[0];
+                UserData.Defeats += 1;
+            }
+
+        }));
+    }
+    
+    private void GivePoopToRandomCharacter() => _characters[0].SetHasPoop(true);
+
+    public Transform GetRandomCharacterTransform() => _characters[UnityEngine.Random.Range(0, _characters.Count)].transform;
+
+    public void ExitToMenu()
+    {
+        SceneManager.LoadSceneAsync("Menu");
+    }
+
+    private IEnumerator EndGame(Action action)
+    {
+        yield return new WaitForSeconds(2f);
+
+        action?.Invoke();
     }
 
     private IEnumerator CooldownBeetwenRounds(Action preCooldownAction, Action afterCooldownAction)
     {
         preCooldownAction?.Invoke();
 
-        yield return new WaitForSeconds(SettingsModel.CooldownBetweenRounds);
+        yield return new WaitForSecondsRealtime(SettingsModel.CooldownBetweenRounds);
 
         afterCooldownAction?.Invoke();
     }

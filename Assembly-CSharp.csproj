@@ -62,23 +62,29 @@
   <ItemGroup>
     <Compile Include="Assets\_Project\Develop\Game\Timer\TimerViewModel.cs" />
     <Compile Include="Assets\_Project\Develop\Game\MessagePanel.cs" />
+    <Compile Include="Assets\_Project\Develop\UserData\UserData.cs" />
+    <Compile Include="Assets\_Project\Develop\Game\Characters\Player.cs" />
+    <Compile Include="Assets\_Project\Develop\Game\Characters\InitializationValueObject.cs" />
+    <Compile Include="Assets\_Project\Develop\Game\Utils\PlayerPlacemaker.cs" />
     <Compile Include="Assets\_Project\Develop\Game\Timer\TimerModel.cs" />
-    <Compile Include="Assets\_Project\Develop\Game\PlayerPlacemaker.cs" />
+    <Compile Include="Assets\_Project\Develop\Game\Utils\Ballistics.cs" />
     <Compile Include="Assets\_Project\Develop\Game\GameController.cs" />
     <Compile Include="Assets\_Project\Develop\Menu\Settings\SettingsViewModel.cs" />
     <Compile Include="Assets\_Project\Develop\Menu\Settings\SettingsView.cs" />
     <Compile Include="Assets\_Project\Develop\Game\Timer\TimerView.cs" />
+    <Compile Include="Assets\_Project\Develop\Game\Characters\Bot.cs" />
     <Compile Include="Assets\_Project\Develop\Menu\Settings\SettingsModel.cs" />
-    <Compile Include="Assets\_Project\Develop\Game\Ballistics.cs" />
     <Compile Include="Assets\_Project\Develop\Game\Field.cs" />
     <Compile Include="Assets\_Project\Develop\Game\Bullet.cs" />
+    <Compile Include="Assets\_Project\Develop\Game\Characters\Character.cs" />
     <Compile Include="Assets\_Project\Develop\Menu\MainMenu.cs" />
-    <Compile Include="Assets\_Project\Develop\Game\Player.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
+    <None Include="Assets\JMO Assets\Cartoon FX Remaster\CFXR Assets\Shaders\CFXR_SETTINGS.cginc" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
+    <None Include="Assets\JMO Assets\Cartoon FX Remaster\CFXR Assets\Shaders\CFXR.cginc" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro_Mobile.cginc" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF SSD.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader" />
@@ -90,10 +96,13 @@
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro_Properties.cginc" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro_Surface.cginc" />
+    <None Include="Assets\JMO Assets\Cartoon FX Remaster\CFXR Prefabs\Texts\_Make your own text effect.txt" />
+    <None Include="Assets\JMO Assets\Cartoon FX Remaster\CFXR Assets\Shaders\CFXR_PASSES.cginc" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF Overlay.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Mobile.shader" />
+    <None Include="Assets\JMO Assets\Cartoon FX Remaster\CFXR Assets\Shaders\CFXR_URP.cginc" />
     <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Sprite.shader" />
@@ -1101,6 +1110,30 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="CFXR.WelcomeScreen.csproj">
+      <Project>{233719C2-515B-DC14-AD7D-CAC5F2A338B8}</Project>
+      <Name>CFXR.WelcomeScreen</Name>
+    </ProjectReference>
+    <ProjectReference Include="KinoBloom.Runtime.csproj">
+      <Project>{F36154FF-3590-2784-DAEE-D0EBC392EEE0}</Project>
+      <Name>KinoBloom.Runtime</Name>
+    </ProjectReference>
+    <ProjectReference Include="ToonyColorsPro.Demo.Editor.csproj">
+      <Project>{71B7DA80-9AAB-D831-7F25-6D1AA34F5EEC}</Project>
+      <Name>ToonyColorsPro.Demo.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="CFXRRuntime.csproj">
+      <Project>{01093B64-D7B9-417C-DED2-0DD6BD352D81}</Project>
+      <Name>CFXRRuntime</Name>
+    </ProjectReference>
+    <ProjectReference Include="CFXREditor.csproj">
+      <Project>{3DB42121-06E4-00DF-645C-A087F91C29F5}</Project>
+      <Name>CFXREditor</Name>
+    </ProjectReference>
+    <ProjectReference Include="CFXRDemo.csproj">
+      <Project>{CD2953FA-4A3E-9671-1AA5-F27E812E56CC}</Project>
+      <Name>CFXRDemo</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
