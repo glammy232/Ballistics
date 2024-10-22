@@ -61,6 +61,8 @@ public class Bullet : MonoBehaviour
             else if(_type == BulletType.Poop)
                 player.Health -= player.GetMaxHealth / 2;
 
+            player.SetDamager(_parentCharacter);
+
             if (player.Health <= 0)
                 _parentCharacter.Kills++;
         }

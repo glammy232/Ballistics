@@ -50,7 +50,7 @@ MonoBehaviour:
   _rb: {fileID: 7772094526559176864}
   _type: 1
   _groundYPosition: -10
-  _explosionTemplate: {fileID: 4593184484909914552, guid: 2e1e9506f5904a64b81744324fb7cd50, type: 3}
+  _explosionTemplate: {fileID: 8524877106343422001, guid: 92364575aa65f1f419b1b7c6a5577cf2, type: 3}
 --- !u!54 &7772094526559176864
 Rigidbody:
   m_ObjectHideFlags: 0

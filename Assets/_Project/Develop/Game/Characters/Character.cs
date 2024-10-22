@@ -20,15 +20,12 @@ public abstract class Character : MonoBehaviour
 
     protected Field _field;
 
+    public Field GetField => _field;
+
     public int ID;
 
     private int _maxHealth;
     public int GetMaxHealth => _maxHealth;
-
-    private float _elapsedTime;
-    private float _transitionTime = 2f;
-
-    private bool _elapse;
 
     private int _health;
     public int Health
@@ -51,6 +48,15 @@ public abstract class Character : MonoBehaviour
                 GameController.Instance.AddPlayerToKillHim(this, true);
             }
         }
+    }
+
+    protected bool _gotDamage;
+    protected Character _damager;
+
+    public void SetDamager(Character damager)
+    {
+        _damager = damager;
+        _gotDamage = true;
     }
 
     private Vector3 _startPosition;

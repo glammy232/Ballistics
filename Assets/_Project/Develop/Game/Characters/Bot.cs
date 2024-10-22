@@ -20,27 +20,42 @@ public sealed class Bot : Character
 
             if (value == true)
             {
-                /*_field.ActivatePoopButtonObject();
-                _field.SetPoopButtonListener(delegate
-                {
-                    UsePoop();
-                });*/
-
-                UsePoop();
+                _field.ActivatePoopButtonObject();
             }
         }
     }
 
     public override void Fire()
     {
-        Debug.Log("Bot Fire");
 
         if (!CanFire)
             return;
 
-        Transform randCharacterTransformPoint = GameController.Instance.GetRandomCharacterTransform();
+        Character targetCharacter;
 
-        _startTouchPosition = randCharacterTransformPoint.position;
+        if (_gotDamage && Random.Range(0, 2) == 0)
+        {
+            targetCharacter = _damager;
+        }
+        else
+        {
+            targetCharacter = GameController.Instance.GetCharacterWithMinHealth(this);
+
+            if (targetCharacter.Health == 100)
+            {
+                targetCharacter.ID = this.ID;
+
+                while (targetCharacter.ID == this.ID)
+                {
+                    targetCharacter = GameController.Instance.GetRandomCharacterTransform();
+                }
+            }
+        }
+
+        if (hasPoop && targetCharacter.Health <= 50)
+            UsePoop();
+
+        _startTouchPosition = targetCharacter.transform.position;
         _lastTouchPosition = transform.position;
 
         if (Input.touchCount == 0 && _startTouchPosition != Vector3.zero && _lastTouchPosition != Vector3.zero && Vector3.Distance(_startTouchPosition, _lastTouchPosition) > _minDistance && Vector3.Distance(_startTouchPosition, _lastTouchPosition) < _maxDistance && _lastFireTime > _fireCooldown + 1.5f)

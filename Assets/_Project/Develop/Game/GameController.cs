@@ -56,11 +56,13 @@ public class GameController : MonoBehaviour
 
     [SerializeField] private List<Field> _fields;
 
-    private void Awake() => Initialize(6);
+    private void Awake() => Initialize(3);
     
     private void Initialize(int numOfPlayers)
     {
         Instance = this;
+
+        _charactersKills = new int[numOfPlayers];
 
         _exitButton.onClick.AddListener(delegate { SceneManager.LoadSceneAsync("Menu"); });
         
@@ -79,6 +81,14 @@ public class GameController : MonoBehaviour
     {
         _characters = new List<Character>();
 
+        List<int> usedIDs = new List<int>();
+
+        for (int i = 0; i < _fields.Count; i++)
+        {
+            int j = i;
+            usedIDs.Add(j);
+        }
+
         for (int i = 0; i < numOfPlayers; i++)
         {
             Character newCharacter;
@@ -88,11 +98,35 @@ public class GameController : MonoBehaviour
             else
                 newCharacter = Instantiate(_botTemplate);
 
-            InitializationValueObject valueObject = new InitializationValueObject(_fields[i], i + 1, SettingsModel.FireCooldown, 0f, 100f, 100f, 100, SettingsModel.SpeedKoaf);
+            int newID = usedIDs[UnityEngine.Random.Range(0, usedIDs.Count)];
+
+            Debug.Log(newID);
+
+            InitializationValueObject valueObject = new InitializationValueObject(_fields[newID], i + 1, SettingsModel.FireCooldown, 0f, 100f, 100f, 100, SettingsModel.SpeedKoaf);
+
+            usedIDs.Remove(newID);
 
             newCharacter.Initialize(valueObject);
 
             _characters.Add(newCharacter);
+        }
+
+        HideFieldHeathBars();
+    }
+
+    private void HideFieldHeathBars()
+    {
+        for (int i = 0; i < _fields.Count; i++)
+        {
+            int value = 0;
+            for (int j = 0; j < _characters.Count; j++)
+            {
+                if (_characters[j].GetField.GetHashCode() == _fields[i].GetHashCode())
+                    value = 1;
+            }
+            
+            if(value == 0)
+                _fields[i].HideHealthBar();
         }
     }
 
@@ -100,16 +134,23 @@ public class GameController : MonoBehaviour
     {
         Transform[] charactersTransforms = new Transform[_characters.Count];
 
-        charactersTransforms[0] = _characters[5].transform;
+        for (int i = _characters.Count - 1; i > 0 ; i--)
+        {
+            charactersTransforms[_characters.Count - i] = _characters[i].transform;
+        }
+
+        /*charactersTransforms[0] = _characters[5].transform;
         charactersTransforms[1] = _characters[0].transform;
         charactersTransforms[2] = _characters[4].transform;
         charactersTransforms[3] = _characters[1].transform;
         charactersTransforms[4] = _characters[3].transform;
-        charactersTransforms[5] = _characters[2].transform;
+        charactersTransforms[5] = _characters[2].transform;*/
 
         PlayerPlacemaker playerPlacemaker = new PlayerPlacemaker();
 
-        playerPlacemaker.ArrangePlayers(charactersTransforms, _ground.position, _ground.localScale, -2, 2, -2, 2);
+        //playerPlacemaker.ArrangePlayers(charactersTransforms, _ground.position, _ground.localScale, -2, 2, -2, 2);
+
+        playerPlacemaker.ArrangePlayers(_characters);
 
         foreach (var character in _characters)
         {
@@ -334,9 +375,24 @@ public class GameController : MonoBehaviour
         }));
     }
     
-    private void GivePoopToRandomCharacter() => _characters[0].SetHasPoop(true);
+    private void GivePoopToRandomCharacter() => _characters[UnityEngine.Random.Range(0, _characters.Count)].SetHasPoop(true);
 
-    public Transform GetRandomCharacterTransform() => _characters[UnityEngine.Random.Range(0, _characters.Count)].transform;
+    public Character GetRandomCharacterTransform() => _characters[UnityEngine.Random.Range(0, _characters.Count)];
+
+    public Character GetCharacterWithMinHealth(Character execlude) => _characters.Find(x => x.Health == GetMinHealthOfCharacters(execlude) && execlude);
+
+    private int GetMinHealthOfCharacters(Character execlude)
+    {
+        int minHealth = 100;
+
+        foreach (var character in _characters)
+        {
+            if(minHealth > character.Health && character.ID != execlude.ID)
+                minHealth = character.Health;
+        }
+
+        return minHealth;
+    }
 
     public void ExitToMenu()
     {

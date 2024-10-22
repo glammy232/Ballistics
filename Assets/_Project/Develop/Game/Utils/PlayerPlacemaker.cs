@@ -26,6 +26,26 @@ public class PlayerPlacemaker
         }
     }
 
+    public void ArrangePlayers(List<Character> players)
+    {
+        List<int> usedIDs = new List<int>();
+
+        for (int i = 0; i < 6; i++)
+        {
+            int j = i;
+            usedIDs.Add(j);
+        }
+
+        for (int i = 0; i < players.Count; i++)
+        {
+            players[i].transform.position = players[i].GetField.transform.GetChild(0).position;
+
+            
+
+            usedIDs.Remove(1);
+        }
+    }
+
     public void MovePlayersLittle(List<Character> players, BordersPlacement bordersPlacement)
     {
         foreach(var player in players)
