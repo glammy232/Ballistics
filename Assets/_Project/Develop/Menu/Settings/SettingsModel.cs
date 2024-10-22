@@ -6,6 +6,7 @@ public class SettingsModel : MonoBehaviour, INotifyPropertyChanged
 {
     public event PropertyChangedEventHandler PropertyChanged;
 
+    public static int NumOfPlayers { get => PlayerPrefs.GetInt(nameof(NumOfPlayers), 6); set => PlayerPrefs.SetInt(nameof(NumOfPlayers), value); }
     public static float MaxHeight { get => PlayerPrefs.GetFloat(nameof(MaxHeight), 2.5f); set => PlayerPrefs.SetFloat(nameof(MaxHeight), value); }
     public static float SpeedKoaf { get => PlayerPrefs.GetFloat(nameof(SpeedKoaf), 4f); set => PlayerPrefs.SetFloat(nameof(SpeedKoaf), value); }
     public static float CooldownBetweenRounds { get => PlayerPrefs.GetFloat(nameof(CooldownBetweenRounds), 2f); set => PlayerPrefs.SetFloat(nameof(CooldownBetweenRounds), value); }
@@ -35,6 +36,11 @@ public class SettingsModel : MonoBehaviour, INotifyPropertyChanged
     public void SetRoundTime(float value)
     {
         RoundTime += value;
+        Notify();
+    }
+    public void SetNumOfPlayers(int value)
+    {
+        NumOfPlayers += value;
         Notify();
     }
 

@@ -150,7 +150,7 @@ MonoBehaviour:
   _nameText: {fileID: 4524024990569189276}
   ID: 0
   _bulletTemplate: {fileID: 5480259434488802910, guid: 4f4c3ef50c5e5434baec33e2b6160c38, type: 3}
-  _poopTemplate: {fileID: 5480259434488802910, guid: a1feae79a71ca01468bd127e664496d2, type: 3}
+  _poopTemplate: {fileID: 5678021487917545052, guid: db389b0e75cdb4d42b490f5d25ded0b1, type: 3}
   CanFire: 0
 --- !u!1 &3862986223043414066
 GameObject:

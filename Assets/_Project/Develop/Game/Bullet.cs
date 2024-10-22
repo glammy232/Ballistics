@@ -44,7 +44,7 @@ public class Bullet : MonoBehaviour
 
     private void Update()
     {
-        if (transform.position.y < _groundYPosition)
+        if (transform.position.y < _groundYPosition || transform.position.z > 16f || transform.position.z < -24f)
             GameController.Instance.DestroyBullet(this);
     }
 
@@ -66,8 +66,8 @@ public class Bullet : MonoBehaviour
             if (player.Health <= 0)
                 _parentCharacter.Kills++;
         }
-        if (collider.gameObject.TryGetComponent(out Bullet bullet) == false)
-            GameController.Instance.DestroyBullet(this);
+
+        GameController.Instance.DestroyBullet(this);
     }
     
     public void SetType(BulletType type) => _type = type;

@@ -14,6 +14,8 @@ public class SettingsView : MonoBehaviour
 
     [SerializeField] private TMP_Text _roundTimeText;
 
+    [SerializeField] private TMP_Text _numOfPlayersText;
+
     private void Awake()
     {
         UpdateView();
@@ -23,7 +25,7 @@ public class SettingsView : MonoBehaviour
     {
         _maxheightText.text = Math.Round(SettingsModel.MaxHeight, 2).ToString();
 
-        _speedKoafText.text = Math.Round(SettingsModel.SpeedKoaf, 2).ToString();
+        _numOfPlayersText.text = SettingsModel.NumOfPlayers.ToString();
 
         _cooldownBetweenRoundsText.text = Math.Round(SettingsModel.CooldownBetweenRounds, 2).ToString();
 

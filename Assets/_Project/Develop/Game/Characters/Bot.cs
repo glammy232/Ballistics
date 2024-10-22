@@ -6,7 +6,7 @@ using UnityEngine;
 public sealed class Bot : Character
 {
     private const float MIN_DISTANCE_KOAF = 0.3f;
-    private const float MAX_DISTANCE_KOAF = 0.6f;
+    private const float MAX_DISTANCE_KOAF = 0.48f;
 
     [SerializeField] private float _botSpeedKoaf;
 
@@ -25,37 +25,50 @@ public sealed class Bot : Character
         }
     }
 
-    public override void Fire()
+    public override bool CanFire
     {
-
-        if (!CanFire)
-            return;
-
-        Character targetCharacter;
-
-        if (_gotDamage && Random.Range(0, 2) == 0)
+        get => _canFire;
+        set
         {
-            targetCharacter = _damager;
-        }
-        else
-        {
-            targetCharacter = GameController.Instance.GetCharacterWithMinHealth(this);
+            _canFire = value;
 
-            if (targetCharacter.Health == 100)
+            if (value == true)
             {
-                targetCharacter.ID = this.ID;
-
-                while (targetCharacter.ID == this.ID)
+                if (_gotDamage && Random.Range(0, 2) == 0 && _targetCharacter == null)
                 {
-                    targetCharacter = GameController.Instance.GetRandomCharacterTransform();
+                    _targetCharacter = _damager;
+                }
+                
+                if (_targetCharacter != null)
+                    return;
+                
+                _targetCharacter = GameController.Instance.GetCharacterWithMinHealth(this);
+
+                if (_targetCharacter.Health == 100)
+                {
+                    while (_targetCharacter.GetID == this.GetID)
+                    {
+                        _targetCharacter = GameController.Instance.GetRandomCharacterTransform();
+                    }
                 }
             }
         }
+    }
 
-        if (hasPoop && targetCharacter.Health <= 50)
+    private Character _targetCharacter;
+
+    public override void Fire()
+    {
+        if (!CanFire)
+            return;
+
+        if (_targetCharacter == null)
+            return;
+
+        if (hasPoop && _targetCharacter.Health <= 50)
             UsePoop();
 
-        _startTouchPosition = targetCharacter.transform.position;
+        _startTouchPosition = _targetCharacter.transform.position;
         _lastTouchPosition = transform.position;
 
         if (Input.touchCount == 0 && _startTouchPosition != Vector3.zero && _lastTouchPosition != Vector3.zero && Vector3.Distance(_startTouchPosition, _lastTouchPosition) > _minDistance && Vector3.Distance(_startTouchPosition, _lastTouchPosition) < _maxDistance && _lastFireTime > _fireCooldown + 1.5f)

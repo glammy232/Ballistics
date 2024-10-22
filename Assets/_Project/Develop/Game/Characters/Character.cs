@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using TMPro;
@@ -22,7 +23,8 @@ public abstract class Character : MonoBehaviour
 
     public Field GetField => _field;
 
-    public int ID;
+    private int _id;
+    public int GetID => _id;
 
     private int _maxHealth;
     public int GetMaxHealth => _maxHealth;
@@ -37,14 +39,14 @@ public abstract class Character : MonoBehaviour
             _health = value;
 
             _field.UpdateHealthView(this);
-
-            if (value < 100)
+            
+            if (value < 100 && CanFire == false)
                 CanFire = true;
-
+            
             if (value <= 0)
             {
                 GetComponent<Renderer>().material.color = Color.black;
-
+            
                 GameController.Instance.AddPlayerToKillHim(this, true);
             }
         }
@@ -99,7 +101,15 @@ public abstract class Character : MonoBehaviour
 
     protected bool _nextProjectileIsPoop;
 
-    public bool CanFire;
+    protected bool _canFire;
+    public virtual bool CanFire
+    {
+        get => _canFire;
+        set
+        {
+            _canFire = value;
+        }
+    }
 
     private float _speedKoaf;
     protected float speedKoaf
@@ -129,21 +139,16 @@ public abstract class Character : MonoBehaviour
 
     #endregion
 
-    public IEnumerator DeathAnimation()
+    public void DeathAnimation()
     {
-        Debug.Log("DEATH");
-        for (int i = 0; i < 30; i++)
-        {
-            yield return new WaitForSecondsRealtime(0.05f);
-            GetComponent<Renderer>().material.color = Color.Lerp(GetComponent<Renderer>().material.color, Color.black, 1f / 20f);
-        }
+        GetComponent<Renderer>().material.DOColor(Color.black, 1f);
     }
 
     private void FixedUpdate() => Fire();
 
     public virtual void Initialize(InitializationValueObject valueObject)
     {
-        ID = valueObject.GetID;
+        _id = valueObject.GetID;
 
         _field = valueObject.GetField;
 
@@ -161,7 +166,7 @@ public abstract class Character : MonoBehaviour
 
         speedKoaf = valueObject.GetSpeedKoaf;
 
-        _nameText.text = ID.ToString();
+        _nameText.text = GetID.ToString();
     }
 
     public void SetStartPosition(Vector3 startPosition) => StartPosition = startPosition;

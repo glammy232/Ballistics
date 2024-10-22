@@ -17,7 +17,7 @@ public class Field : MonoBehaviour
          _healthBar.fillAmount = (float)player.Health / player.GetMaxHealth;
     }
 
-    public void HideHealthBar() => Destroy(_healthBar.transform.parent.gameObject);
+    public void HideHealthBar() => _healthBar.transform.parent.gameObject.SetActive(false);
 
     public void ActivatePoopButtonObject() => _activatePoopButton.gameObject.SetActive(true);
 

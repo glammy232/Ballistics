@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -40,8 +41,6 @@ public class PlayerPlacemaker
         {
             players[i].transform.position = players[i].GetField.transform.GetChild(0).position;
 
-            
-
             usedIDs.Remove(1);
         }
     }
@@ -52,7 +51,7 @@ public class PlayerPlacemaker
         {
             Vector3 offset = new Vector3(Random.Range(bordersPlacement.MinX, bordersPlacement.MaxX), 0, Random.Range(bordersPlacement.MinY, bordersPlacement.MaxY));
 
-            player.transform.position = player.StartPosition + offset;
+            player.transform.DOMove(player.StartPosition + offset, 2f);
         }
     }
 }
