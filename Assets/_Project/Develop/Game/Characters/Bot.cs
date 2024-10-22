@@ -5,8 +5,8 @@ using UnityEngine;
 
 public sealed class Bot : Character
 {
-    private const float MIN_DISTANCE_KOAF = 0.3f;
-    private const float MAX_DISTANCE_KOAF = 0.48f;
+    private const float MIN_DISTANCE_KOAF = 0.32f;
+    private const float MAX_DISTANCE_KOAF = 0.44f;
 
     [SerializeField] private float _botSpeedKoaf;
 
@@ -29,11 +29,14 @@ public sealed class Bot : Character
     {
         get => _canFire;
         set
-        {
+        {            
             _canFire = value;
 
             if (value == true)
             {
+                if (_targetCharacter != null)
+                    return;
+
                 if (_gotDamage && Random.Range(0, 2) == 0 && _targetCharacter == null)
                 {
                     _targetCharacter = _damager;
@@ -41,7 +44,7 @@ public sealed class Bot : Character
                 
                 if (_targetCharacter != null)
                     return;
-                
+
                 _targetCharacter = GameController.Instance.GetCharacterWithMinHealth(this);
 
                 if (_targetCharacter.Health == 100)
@@ -56,6 +59,8 @@ public sealed class Bot : Character
     }
 
     private Character _targetCharacter;
+
+    public void SetTargetCharacterToNull() => _targetCharacter = null; 
 
     public override void Fire()
     {

@@ -7,7 +7,7 @@ using static System.TimeZoneInfo;
 
 public abstract class Character : MonoBehaviour
 {
-    [SerializeField] private TMP_Text _nameText;
+    [SerializeField] protected TMP_Text _nameText;
 
     private int _kills;
     public int Kills
@@ -23,10 +23,10 @@ public abstract class Character : MonoBehaviour
 
     public Field GetField => _field;
 
-    private int _id;
+    protected int _id;
     public int GetID => _id;
 
-    private int _maxHealth;
+    protected int _maxHealth;
     public int GetMaxHealth => _maxHealth;
 
     private int _health;
@@ -128,7 +128,7 @@ public abstract class Character : MonoBehaviour
 
     protected float _maxDistance;
 
-    private float _maxProjectileSpeed;
+    protected float _maxProjectileSpeed;
 
     protected Vector3 _startTouchPosition;
     protected Vector3 _lastTouchPosition;

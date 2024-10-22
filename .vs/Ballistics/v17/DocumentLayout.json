@@ -3,24 +3,24 @@
   "WorkspaceRootPath": "C:\\MainProjects\\Freelance\\Ballistics\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{DAA9FEEA-37CD-C57B-60BF-8896746782EE}|Assembly-CSharp.csproj|c:\\mainprojects\\freelance\\ballistics\\assets\\_project\\develop\\game\\bullet.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{DAA9FEEA-37CD-C57B-60BF-8896746782EE}|Assembly-CSharp.csproj|solutionrelative:assets\\_project\\develop\\game\\bullet.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{DAA9FEEA-37CD-C57B-60BF-8896746782EE}|Assembly-CSharp.csproj|c:\\mainprojects\\freelance\\ballistics\\assets\\_project\\develop\\game\\gamecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{DAA9FEEA-37CD-C57B-60BF-8896746782EE}|Assembly-CSharp.csproj|solutionrelative:assets\\_project\\develop\\game\\gamecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{DAA9FEEA-37CD-C57B-60BF-8896746782EE}|Assembly-CSharp.csproj|C:\\MainProjects\\Freelance\\Ballistics\\assets\\_project\\develop\\game\\characters\\bot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{DAA9FEEA-37CD-C57B-60BF-8896746782EE}|Assembly-CSharp.csproj|solutionrelative:assets\\_project\\develop\\game\\characters\\bot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{DAA9FEEA-37CD-C57B-60BF-8896746782EE}|Assembly-CSharp.csproj|C:\\MainProjects\\Freelance\\Ballistics\\assets\\_project\\develop\\game\\characters\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DAA9FEEA-37CD-C57B-60BF-8896746782EE}|Assembly-CSharp.csproj|solutionrelative:assets\\_project\\develop\\game\\characters\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{DAA9FEEA-37CD-C57B-60BF-8896746782EE}|Assembly-CSharp.csproj|C:\\MainProjects\\Freelance\\Ballistics\\assets\\_project\\develop\\game\\characters\\character.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{DAA9FEEA-37CD-C57B-60BF-8896746782EE}|Assembly-CSharp.csproj|solutionrelative:assets\\_project\\develop\\game\\characters\\character.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{DAA9FEEA-37CD-C57B-60BF-8896746782EE}|Assembly-CSharp.csproj|C:\\MainProjects\\Freelance\\Ballistics\\assets\\_project\\develop\\game\\characters\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{DAA9FEEA-37CD-C57B-60BF-8896746782EE}|Assembly-CSharp.csproj|solutionrelative:assets\\_project\\develop\\game\\characters\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{DAA9FEEA-37CD-C57B-60BF-8896746782EE}|Assembly-CSharp.csproj|C:\\MainProjects\\Freelance\\Ballistics\\assets\\_project\\develop\\game\\gamecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DAA9FEEA-37CD-C57B-60BF-8896746782EE}|Assembly-CSharp.csproj|solutionrelative:assets\\_project\\develop\\game\\gamecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DAA9FEEA-37CD-C57B-60BF-8896746782EE}|Assembly-CSharp.csproj|c:\\mainprojects\\freelance\\ballistics\\assets\\_project\\develop\\game\\bullet.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DAA9FEEA-37CD-C57B-60BF-8896746782EE}|Assembly-CSharp.csproj|solutionrelative:assets\\_project\\develop\\game\\bullet.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DAA9FEEA-37CD-C57B-60BF-8896746782EE}|Assembly-CSharp.csproj|C:\\MainProjects\\Freelance\\Ballistics\\assets\\_project\\develop\\game\\characters\\bot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DAA9FEEA-37CD-C57B-60BF-8896746782EE}|Assembly-CSharp.csproj|solutionrelative:assets\\_project\\develop\\game\\characters\\bot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -30,69 +30,69 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 3,
               "Title": "Bullet.cs",
               "DocumentMoniker": "C:\\MainProjects\\Freelance\\Ballistics\\Assets\\_Project\\Develop\\Game\\Bullet.cs",
               "RelativeDocumentMoniker": "Assets\\_Project\\Develop\\Game\\Bullet.cs",
               "ToolTip": "C:\\MainProjects\\Freelance\\Ballistics\\Assets\\_Project\\Develop\\Game\\Bullet.cs",
               "RelativeToolTip": "Assets\\_Project\\Develop\\Game\\Bullet.cs",
-              "ViewState": "AQIAACwAAAAAAAAAAAA1wD0AAAA4AAAA",
+              "ViewState": "AQIAADEAAAAAAAAAAAAuwDgAAABFAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-22T16:46:09.354Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 1,
               "Title": "Character.cs",
               "DocumentMoniker": "C:\\MainProjects\\Freelance\\Ballistics\\Assets\\_Project\\Develop\\Game\\Characters\\Character.cs",
               "RelativeDocumentMoniker": "Assets\\_Project\\Develop\\Game\\Characters\\Character.cs",
               "ToolTip": "C:\\MainProjects\\Freelance\\Ballistics\\Assets\\_Project\\Develop\\Game\\Characters\\Character.cs",
               "RelativeToolTip": "Assets\\_Project\\Develop\\Game\\Characters\\Character.cs",
-              "ViewState": "AQIAAJgAAAAAAAAAAAAmwKgAAAAcAAAA",
+              "ViewState": "AQIAAAEAAAAAAAAAAAAgwAkAAAAeAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-21T05:52:54.141Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 0,
               "Title": "Player.cs",
               "DocumentMoniker": "C:\\MainProjects\\Freelance\\Ballistics\\Assets\\_Project\\Develop\\Game\\Characters\\Player.cs",
               "RelativeDocumentMoniker": "Assets\\_Project\\Develop\\Game\\Characters\\Player.cs",
               "ToolTip": "C:\\MainProjects\\Freelance\\Ballistics\\Assets\\_Project\\Develop\\Game\\Characters\\Player.cs",
               "RelativeToolTip": "Assets\\_Project\\Develop\\Game\\Characters\\Player.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAuwAIAAAACAAAA",
+              "ViewState": "AQIAAAoAAAAAAAAAAAAQwBgAAAAcAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-21T05:19:32.175Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "Bot.cs",
               "DocumentMoniker": "C:\\MainProjects\\Freelance\\Ballistics\\Assets\\_Project\\Develop\\Game\\Characters\\Bot.cs",
               "RelativeDocumentMoniker": "Assets\\_Project\\Develop\\Game\\Characters\\Bot.cs",
               "ToolTip": "C:\\MainProjects\\Freelance\\Ballistics\\Assets\\_Project\\Develop\\Game\\Characters\\Bot.cs",
               "RelativeToolTip": "Assets\\_Project\\Develop\\Game\\Characters\\Bot.cs",
-              "ViewState": "AQIAACAAAAAAAAAAAAAmwDEAAAAVAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAcAAAAwAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-21T05:19:30.477Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "GameController.cs",
               "DocumentMoniker": "C:\\MainProjects\\Freelance\\Ballistics\\Assets\\_Project\\Develop\\Game\\GameController.cs",
               "RelativeDocumentMoniker": "Assets\\_Project\\Develop\\Game\\GameController.cs",
               "ToolTip": "C:\\MainProjects\\Freelance\\Ballistics\\Assets\\_Project\\Develop\\Game\\GameController.cs",
               "RelativeToolTip": "Assets\\_Project\\Develop\\Game\\GameController.cs",
-              "ViewState": "AQIAAF0AAAAAAAAAAAAmwIoAAAAJAAAA",
+              "ViewState": "AQIAANAAAAAAAAAAAAAYwD4BAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-18T14:14:36.065Z",
               "EditorCaption": ""

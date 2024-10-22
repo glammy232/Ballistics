@@ -120,6 +120,9 @@ public class GameController : MonoBehaviour
         {
             SetPlayerFireAbility(_currentCharacter, true);
 
+            if (_currentCharacter.CanFire == false)
+                _currentCharacter.CanFire = true;
+
             _timer.StartTimer((int)SettingsModel.RoundTime, delegate
             {
                 ResetMap();
@@ -188,10 +191,13 @@ public class GameController : MonoBehaviour
 
     private void ResetMap()// Подготавливает начальное состояние перед раундом
     {
-        foreach (var character in _characters)
+        foreach (Character character in _characters)
         {
             if(character != _characterToKill)
                 character.GetComponent<Renderer>().material.color = Color.white;
+
+            if(character.TryGetComponent(out Bot bot))
+                bot.SetTargetCharacterToNull();
 
             character.CanFire = false;
         }
@@ -308,7 +314,7 @@ public class GameController : MonoBehaviour
 
     public Character GetRandomCharacterTransform() => _characters[UnityEngine.Random.Range(0, _characters.Count)];
 
-    public Character GetCharacterWithMinHealth(Character execlude) => _characters.Find(x => x.Health == GetMinHealthOfCharacters(execlude) && execlude);
+    public Character GetCharacterWithMinHealth(Character execlude) => _characters.Find(x => x.Health == GetMinHealthOfCharacters(execlude));
 
     private int GetMinHealthOfCharacters(Character execlude)
     {
@@ -316,7 +322,7 @@ public class GameController : MonoBehaviour
 
         foreach (var character in _characters)
         {
-            if(minHealth > character.Health && character.GetID != execlude.GetID)
+            if(minHealth > character.Health && character.GetID != execlude.GetID && character.Health > 0)
                 minHealth = character.Health;
         }
 

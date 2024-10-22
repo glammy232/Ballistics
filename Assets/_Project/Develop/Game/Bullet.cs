@@ -54,7 +54,7 @@ public class Bullet : MonoBehaviour
 
         Instantiate(_explosionTemplate, transform.position, Quaternion.identity);
 
-        if (collider.gameObject.TryGetComponent(out Character player) && player != _parentCharacter)
+        if (collider.gameObject.TryGetComponent(out Character player))
         {
             if (_type == BulletType.Tomato)
                 player.Health -= player.GetMaxHealth / 10;
