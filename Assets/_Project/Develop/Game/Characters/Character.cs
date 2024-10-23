@@ -30,36 +30,34 @@ public abstract class Character : MonoBehaviour
     public int GetMaxHealth => _maxHealth;
 
     private int _health;
-    public int Health
+    public int GetHealth => _health;
+    public void SetHealth(int value)
     {
-        get => _health;
+        _health = value;
 
-        set
+        _field.UpdateHealthView(this);
+
+        if (value <= 0)
         {
-            _health = value;
+            GetComponent<Renderer>().material.color = Color.black;
 
-            _field.UpdateHealthView(this);
-            
-            if (value < 100 && CanFire == false)
-                CanFire = true;
-            
-            if (value <= 0)
-            {
-                GetComponent<Renderer>().material.color = Color.black;
-            
-                GameController.Instance.AddPlayerToKillHim(this, true);
-            }
+            GameController.Instance.AddPlayerToKillHim(this, true);
         }
+    }
+
+    public void GetDamage(Character damager, int damage)
+    {
+        _gotDamage = true;
+
+        _damager = damager;
+
+        SetHealth(_health - damage);
+
+        CanFire = true;
     }
 
     protected bool _gotDamage;
     protected Character _damager;
-
-    public void SetDamager(Character damager)
-    {
-        _damager = damager;
-        _gotDamage = true;
-    }
 
     private Vector3 _startPosition;
     public Vector3 StartPosition
@@ -162,7 +160,7 @@ public abstract class Character : MonoBehaviour
 
         _maxHealth = valueObject.GetMaxHealth;
 
-        Health = valueObject.GetMaxHealth;
+        SetHealth(valueObject.GetMaxHealth);
 
         speedKoaf = valueObject.GetSpeedKoaf;
 
@@ -214,6 +212,9 @@ public abstract class Character : MonoBehaviour
             float speed = Vector3.Distance(_startTouchPosition, _lastTouchPosition) * speedKoaf;
 
             _startTouchPosition = _startTouchPosition - _lastTouchPosition;
+
+            Vector3 target = _lastTouchPosition; 
+
             _lastTouchPosition = Vector3.zero;
 
             Vector3 finalDirection = -_startTouchPosition;
@@ -228,7 +229,7 @@ public abstract class Character : MonoBehaviour
                 angle = 360 - angle;
 
 
-            bullet.Initialize(SettingsModel.MaxHeight, speed, angle, this);
+            bullet.Initialize(SettingsModel.MaxHeight, speed, angle, this, target);
 
             _startTouchPosition = Vector2.zero;
 

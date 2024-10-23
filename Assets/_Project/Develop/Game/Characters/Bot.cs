@@ -37,15 +37,35 @@ public sealed class Bot : Character
                 if (_targetCharacter != null)
                     return;
 
-                if (_gotDamage && Random.Range(0, 2) == 0 && _targetCharacter == null)
-                {
-                    _targetCharacter ??= _damager;
-                }
-                
-                if (_targetCharacter != null)
-                    return;
+                int rand = Random.Range(0, 2);
 
-                _targetCharacter = GameController.Instance.GetCharacterWithMinHealth(this);
+                Debug.Log(_gotDamage + " " + GetID);
+                if (_gotDamage && GameController.Instance.GetCharacterWithMinHealth(this).GetHealth < 100)
+                {
+                    if(rand == 0)
+                    {
+                        _targetCharacter = _damager;
+                        Debug.Log("Damager IS: " + _targetCharacter.GetID);
+                    }
+                    else
+                    {
+                        _targetCharacter = GameController.Instance.GetCharacterWithMinHealth(this);
+                        Debug.Log("MinHealth IS: " + _targetCharacter.GetID);
+                    }
+                }
+                else if (_gotDamage && GameController.Instance.GetCharacterWithMinHealth(this).GetHealth == 100)
+                {
+                    _targetCharacter = _damager;
+                    Debug.Log("Damager1 IS: " + _targetCharacter.GetID);
+                }
+                else
+                {
+                    if(_targetCharacter == null)
+                    {
+                        _targetCharacter = GameController.Instance.GetRandomCharacter(this);
+                        Debug.Log("Rand IS: " + _targetCharacter.GetID);
+                    }
+                }
             }
         }
     }
@@ -61,19 +81,14 @@ public sealed class Bot : Character
 
         if (_targetCharacter == null)
         {
-            Debug.Log("Target IS Null");
             return;
         }
 
-        if (hasPoop && _targetCharacter.Health <= 50)
+        if (hasPoop && _targetCharacter.GetHealth <= 50)
             UsePoop();
 
         _startTouchPosition = _targetCharacter.transform.position;
         _lastTouchPosition = transform.position;
-
-        Debug.Log(Vector3.Distance(_startTouchPosition, _lastTouchPosition));
-        Debug.Log(Vector3.Distance(_startTouchPosition, _lastTouchPosition) < _maxDistance);
-        Debug.Log(_lastFireTime > _fireCooldown + 1.5f);
 
         if (Vector3.Distance(_startTouchPosition, _lastTouchPosition) > _minDistance && Vector3.Distance(_startTouchPosition, _lastTouchPosition) < _maxDistance && _lastFireTime > _fireCooldown + 1.5f)
         {
@@ -109,7 +124,7 @@ public sealed class Bot : Character
                 angle = 360 - angle;
 
 
-            bullet.Initialize(SettingsModel.MaxHeight, speed, angle, this);
+            bullet.Initialize(SettingsModel.MaxHeight, speed, angle, this, _targetCharacter.transform.position);
 
             _startTouchPosition = Vector2.zero;
 

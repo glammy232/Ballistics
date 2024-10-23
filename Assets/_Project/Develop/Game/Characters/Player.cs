@@ -18,7 +18,7 @@ public sealed class Player : Character
 
         _maxHealth = valueObject.GetMaxHealth;
 
-        Health = valueObject.GetMaxHealth;
+        SetHealth(valueObject.GetMaxHealth);
 
         speedKoaf = valueObject.GetSpeedKoaf;
 

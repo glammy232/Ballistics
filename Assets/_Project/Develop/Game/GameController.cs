@@ -13,6 +13,11 @@ public class GameController : MonoBehaviour
 
     public static GameController Instance;
 
+    [SerializeField] private TMP_Text _persentOfHits;
+
+    public int Hits;
+    public int FiredBullets;
+
     [SerializeField] private Player _playerTemplate;
     [SerializeField] private Bot _botTemplate;
 
@@ -62,7 +67,12 @@ public class GameController : MonoBehaviour
     private bool isRoundRunning = false;
 
     private void Awake() => Initialize(SettingsModel.NumOfPlayers);
-    
+
+    private void LateUpdate()
+    {
+        _persentOfHits.text = ((float)Hits / (float)FiredBullets * 100).ToString();
+    }
+
     private void Initialize(int numOfPlayers)
     {
         Instance = this;
@@ -115,6 +125,18 @@ public class GameController : MonoBehaviour
 
         if (currentRound > 1)
             _currentCharacter = FindNextPlayer();
+
+        bool hasPlayer = false;
+
+        foreach (Character character in _characters)
+        {
+            if (character.TryGetComponent(out Player player))
+                hasPlayer = true;
+        }
+
+        if(hasPlayer == false)
+            PreEndGame();
+
 
         if (_currentCharacter != null)
         {
@@ -282,17 +304,29 @@ public class GameController : MonoBehaviour
             List<int> isDead = new List<int>();
             for(int i = 0; i < _characters.Count; i++)
             {
-                if (_characters[i].Health <= 0)
+                if (_characters[i].GetHealth <= 0)
                     isDead.Add(_characters[i].GetID);
             }
             _endCanvas.gameObject.SetActive(true);
 
+            GameObject.Find("Map").SetActive(false);
+
             int final = 0;
             if (_characters[0].GetID == 1 && isDead.Contains(1) == false)
             {
-                final = 10 + _charactersKills[0];
+                Character charact = _characters[0];
+
+                foreach (var character in _characters)
+                {
+                    if (character.TryGetComponent(out Player player))
+                    {
+                        charact = character;
+                    }
+                }
+
+                final = 10 + charact.Kills;
                 _resultValuesText.text = $"Победа: 10\nВыбил: {_charactersKills[0]}\n\nИтог: {final}";
-                UserData.Kills += _charactersKills[0];
+                UserData.Kills += charact.Kills;
                 UserData.Wins += 1;
             }
             else
@@ -303,7 +337,18 @@ public class GameController : MonoBehaviour
                     final = 0;
 
                 _resultValuesText.text = $"Поражение: -1\nВыбил: {_charactersKills[0]}\n\nИтог: {final}";
-                UserData.Kills += _charactersKills[0];
+
+                Character charact = _characters[0];
+
+                foreach (var character in _characters)
+                {
+                    if(character.TryGetComponent(out Player player))
+                    {
+                        charact = character;
+                    }
+                }
+
+                UserData.Kills += charact.Kills;
                 UserData.Defeats += 1;
             }
 
@@ -323,12 +368,12 @@ public class GameController : MonoBehaviour
 
     public Character GetCharacterWithMinHealth(Character execlude)
     {
-        Debug.Log("Character With Min Health Is: " + _characters.Find(x => x.Health == GetMinHealthOfCharacters(execlude)).name);
+        Debug.Log("Character With Min Health Is: " + _characters.Find(x => x.GetHealth == GetMinHealthOfCharacters(execlude)).name);
 
         if(GetMinHealthOfCharacters(execlude) == 100)
             return GetRandomCharacter(execlude);
 
-        return _characters.Find(x => x.Health == GetMinHealthOfCharacters(execlude));
+        return _characters.Find(x => x.GetHealth == GetMinHealthOfCharacters(execlude));
     }
 
     private int GetMinHealthOfCharacters(Character execlude)
@@ -337,8 +382,8 @@ public class GameController : MonoBehaviour
 
         foreach (var character in _characters)
         {
-            if(minHealth > character.Health && character.GetID != execlude.GetID && character.Health > 0)
-                minHealth = character.Health;
+            if(minHealth > character.GetHealth && character.GetID != execlude.GetID && character.GetHealth > 0)
+                minHealth = character.GetHealth;
         }
 
         return minHealth;
@@ -377,6 +422,8 @@ public class GameController : MonoBehaviour
             _fields[newID].ParentCharacter = newCharacter;
 
             newCharacter.Initialize(valueObject);
+
+            newCharacter.transform.parent = GameObject.Find("Map").transform;
 
             _characters.Add(newCharacter);
 

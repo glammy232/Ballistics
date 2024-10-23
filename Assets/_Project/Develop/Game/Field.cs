@@ -20,7 +20,7 @@ public class Field : MonoBehaviour
 
     public void UpdateHealthView(Character player)
     {
-         _healthBar.fillAmount = (float)player.Health / player.GetMaxHealth;
+         _healthBar.fillAmount = (float)player.GetHealth / player.GetMaxHealth;
     }
 
     public void HideHealthBar() => _healthBar.transform.parent.gameObject.SetActive(false);

@@ -10,8 +10,10 @@ public class Bullet : MonoBehaviour
 
     private Character _parentCharacter;
 
+    private const float MIN_DISTANCE = 10f;
+
     [SerializeField] private GameObject _explosionTemplate;
-    public void Initialize(float maxHeight, float startSpeed, float angle, Character parent)
+    public void Initialize(float maxHeight, float startSpeed, float angle, Character parent, Vector3 targetPos)
     {
         maxHeight = SettingsModel.MaxHeight;
 
@@ -19,15 +21,21 @@ public class Bullet : MonoBehaviour
 
         _rb.velocity = Vector3.zero;
 
-        Vector3 startDirection = Ballistics.StartDirection(maxHeight, startSpeed);
-
-        float startSpeedOffset = Random.Range(2f, 3.25f);
-
-        if (startSpeed <= Ballistics.MinStartSpeed(maxHeight))
+        if (Vector3.Distance(targetPos, transform.position) < MIN_DISTANCE)
         {
-            startSpeed += startSpeedOffset;
-            startDirection = Ballistics.StartDirection(maxHeight, startSpeed);
+            float l = MIN_DISTANCE;
+            float g = Mathf.Abs(Physics.gravity.y);
+            float sin = Mathf.Sin(2 * angle * Mathf.Deg2Rad);
+
+            float n = l * 2 * g;
+            float m = sin * sin;
+
+            startSpeed = Mathf.Sqrt(n / m) / 5f;
+
+            startSpeed *= Random.Range(1f, 1.8f);
         }
+
+        Vector3 startDirection = Ballistics.StartDirection(maxHeight, startSpeed);
 
         angle = angle * Mathf.Deg2Rad;
 
@@ -40,27 +48,15 @@ public class Bullet : MonoBehaviour
 
         Vector3 finalDirection = rotationMatrix.MultiplyPoint3x4(startDirection);
 
-        //Debug.Log($"<color=blue>Min speed: {Ballistics.MinStartSpeed(maxHeight)}</color>");
-
-        if (startSpeed <= Ballistics.MinStartSpeed(maxHeight))
-            finalDirection = finalDirection * (Ballistics.MinStartSpeed(maxHeight));
-        else 
-            finalDirection = finalDirection * startSpeed;
+        finalDirection = finalDirection * startSpeed;
 
         _rb.AddForce(finalDirection, ForceMode.VelocityChange);
     }
 
-    private void Update()
-    {
-        if (transform.position.y <= _groundYPosition || transform.position.z >= 16f || transform.position.z <= -24f || transform.position.x >= 8.5f || transform.position.x <= -8.5f)
-        {
-            Instantiate(_explosionTemplate, transform.position, Quaternion.identity);
-            GameController.Instance.DestroyBullet(this);
-        }
-    }
-
     private void OnCollisionEnter(Collision collider)
     {
+        GameController.Instance.FiredBullets++;
+
         Camera.main.GetComponent<AudioSource>().PlayOneShot(Resources.Load<AudioClip>("click"));
 
         Instantiate(_explosionTemplate, transform.position, Quaternion.identity);
@@ -68,19 +64,21 @@ public class Bullet : MonoBehaviour
         if (collider.gameObject.TryGetComponent(out Character player))
         {
             if (_type == BulletType.Tomato)
-                player.Health -= player.GetMaxHealth / 10;
+                player.GetDamage(_parentCharacter, player.GetMaxHealth / 10);
             else if(_type == BulletType.Poop)
-                player.Health -= player.GetMaxHealth / 2;
+                player.GetDamage(_parentCharacter, player.GetMaxHealth / 10);
 
-            player.SetDamager(_parentCharacter);
-
-            if (player.Health <= 0)
+            if (player.GetHealth <= 0)
                 _parentCharacter.Kills++;
+
+            GameController.Instance.Hits++;
         }
         else if (collider.gameObject.TryGetComponent(out Field field))
         {
             if(field.ParentCharacter != null)
-                field.ParentCharacter.CanFire = true;
+            {
+                field.ParentCharacter.GetDamage(_parentCharacter, 0);
+            }
         }
 
         GameController.Instance.DestroyBullet(this);
