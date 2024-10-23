@@ -236,7 +236,7 @@ public class GameController : MonoBehaviour
 
         _characters.Remove(player);
 
-        Destroy(player.gameObject);
+        Destroy(player);
 
     }
 
@@ -312,9 +312,24 @@ public class GameController : MonoBehaviour
     
     private void GivePoopToRandomCharacter() => _characters[UnityEngine.Random.Range(0, _characters.Count)].SetHasPoop(true);
 
-    public Character GetRandomCharacterTransform() => _characters[UnityEngine.Random.Range(0, _characters.Count)];
+    public Character GetRandomCharacter(Character execlude)
+    {
+        List<Character> characters = _characters;
 
-    public Character GetCharacterWithMinHealth(Character execlude) => _characters.Find(x => x.Health == GetMinHealthOfCharacters(execlude));
+        _characters.Remove(execlude);
+
+        return characters[UnityEngine.Random.Range(0, characters.Count)];
+    }
+
+    public Character GetCharacterWithMinHealth(Character execlude)
+    {
+        Debug.Log("Character With Min Health Is: " + _characters.Find(x => x.Health == GetMinHealthOfCharacters(execlude)).name);
+
+        if(GetMinHealthOfCharacters(execlude) == 100)
+            return GetRandomCharacter(execlude);
+
+        return _characters.Find(x => x.Health == GetMinHealthOfCharacters(execlude));
+    }
 
     private int GetMinHealthOfCharacters(Character execlude)
     {
@@ -358,6 +373,8 @@ public class GameController : MonoBehaviour
             int newID = usedIDs[UnityEngine.Random.Range(0, usedIDs.Count)];
 
             InitializationValueObject valueObject = new InitializationValueObject(_fields[newID], newID + 1, SettingsModel.FireCooldown, 0f, 100f, 100f, 100, SettingsModel.SpeedKoaf);
+
+            _fields[newID].ParentCharacter = newCharacter;
 
             newCharacter.Initialize(valueObject);
 

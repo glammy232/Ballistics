@@ -5,8 +5,8 @@ using UnityEngine;
 
 public sealed class Bot : Character
 {
-    private const float MIN_DISTANCE_KOAF = 0.32f;
-    private const float MAX_DISTANCE_KOAF = 0.44f;
+    private const float MIN_DISTANCE_KOAF = 0.33f;
+    private const float MAX_DISTANCE_KOAF = 0.41f;
 
     [SerializeField] private float _botSpeedKoaf;
 
@@ -39,21 +39,13 @@ public sealed class Bot : Character
 
                 if (_gotDamage && Random.Range(0, 2) == 0 && _targetCharacter == null)
                 {
-                    _targetCharacter = _damager;
+                    _targetCharacter ??= _damager;
                 }
                 
                 if (_targetCharacter != null)
                     return;
 
                 _targetCharacter = GameController.Instance.GetCharacterWithMinHealth(this);
-
-                if (_targetCharacter.Health == 100)
-                {
-                    while (_targetCharacter.GetID == this.GetID)
-                    {
-                        _targetCharacter = GameController.Instance.GetRandomCharacterTransform();
-                    }
-                }
             }
         }
     }
@@ -68,7 +60,10 @@ public sealed class Bot : Character
             return;
 
         if (_targetCharacter == null)
+        {
+            Debug.Log("Target IS Null");
             return;
+        }
 
         if (hasPoop && _targetCharacter.Health <= 50)
             UsePoop();
@@ -76,7 +71,11 @@ public sealed class Bot : Character
         _startTouchPosition = _targetCharacter.transform.position;
         _lastTouchPosition = transform.position;
 
-        if (Input.touchCount == 0 && _startTouchPosition != Vector3.zero && _lastTouchPosition != Vector3.zero && Vector3.Distance(_startTouchPosition, _lastTouchPosition) > _minDistance && Vector3.Distance(_startTouchPosition, _lastTouchPosition) < _maxDistance && _lastFireTime > _fireCooldown + 1.5f)
+        Debug.Log(Vector3.Distance(_startTouchPosition, _lastTouchPosition));
+        Debug.Log(Vector3.Distance(_startTouchPosition, _lastTouchPosition) < _maxDistance);
+        Debug.Log(_lastFireTime > _fireCooldown + 1.5f);
+
+        if (Vector3.Distance(_startTouchPosition, _lastTouchPosition) > _minDistance && Vector3.Distance(_startTouchPosition, _lastTouchPosition) < _maxDistance && _lastFireTime > _fireCooldown + 1.5f)
         {
             Bullet bullet;
 

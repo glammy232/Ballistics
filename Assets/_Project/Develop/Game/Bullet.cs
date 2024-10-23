@@ -21,6 +21,14 @@ public class Bullet : MonoBehaviour
 
         Vector3 startDirection = Ballistics.StartDirection(maxHeight, startSpeed);
 
+        float startSpeedOffset = Random.Range(2f, 3.25f);
+
+        if (startSpeed <= Ballistics.MinStartSpeed(maxHeight))
+        {
+            startSpeed += startSpeedOffset;
+            startDirection = Ballistics.StartDirection(maxHeight, startSpeed);
+        }
+
         angle = angle * Mathf.Deg2Rad;
 
         Matrix4x4 rotationMatrix = new Matrix4x4(
@@ -34,8 +42,8 @@ public class Bullet : MonoBehaviour
 
         //Debug.Log($"<color=blue>Min speed: {Ballistics.MinStartSpeed(maxHeight)}</color>");
 
-        if (startSpeed < Ballistics.MinStartSpeed(maxHeight))
-            finalDirection = finalDirection * Ballistics.MinStartSpeed(maxHeight);
+        if (startSpeed <= Ballistics.MinStartSpeed(maxHeight))
+            finalDirection = finalDirection * (Ballistics.MinStartSpeed(maxHeight));
         else 
             finalDirection = finalDirection * startSpeed;
 
@@ -44,8 +52,11 @@ public class Bullet : MonoBehaviour
 
     private void Update()
     {
-        if (transform.position.y < _groundYPosition || transform.position.z > 16f || transform.position.z < -24f)
+        if (transform.position.y <= _groundYPosition || transform.position.z >= 16f || transform.position.z <= -24f || transform.position.x >= 8.5f || transform.position.x <= -8.5f)
+        {
+            Instantiate(_explosionTemplate, transform.position, Quaternion.identity);
             GameController.Instance.DestroyBullet(this);
+        }
     }
 
     private void OnCollisionEnter(Collision collider)
@@ -65,6 +76,11 @@ public class Bullet : MonoBehaviour
 
             if (player.Health <= 0)
                 _parentCharacter.Kills++;
+        }
+        else if (collider.gameObject.TryGetComponent(out Field field))
+        {
+            if(field.ParentCharacter != null)
+                field.ParentCharacter.CanFire = true;
         }
 
         GameController.Instance.DestroyBullet(this);

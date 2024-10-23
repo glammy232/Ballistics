@@ -7,9 +7,15 @@ public class Field : MonoBehaviour
     [SerializeField] private Image _healthBar;
     [SerializeField] private Button _activatePoopButton;
 
+    public Character ParentCharacter;
+
     private void Awake()
     {
-        _activatePoopButton.onClick.AddListener(delegate { _activatePoopButton.gameObject.SetActive(false); });
+        _activatePoopButton.onClick.AddListener(delegate { 
+
+            if(ParentCharacter.TryGetComponent(out Player player))
+                _activatePoopButton.gameObject.SetActive(false); 
+        });
     }
 
     public void UpdateHealthView(Character player)
