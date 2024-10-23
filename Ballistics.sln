@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CFXRRuntime", "CFXRRuntime.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly-CSharp.csproj", "{DAA9FEEA-37CD-C57B-60BF-8896746782EE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp-Editor", "Assembly-CSharp-Editor.csproj", "{3C86609C-0B28-EDF0-F21B-2EF1951ECF7F}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp-Editor-firstpass", "Assembly-CSharp-Editor-firstpass.csproj", "{B780E53F-4A2F-1CAF-A69A-DAAE9745553A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CFXR.WelcomeScreen", "CFXR.WelcomeScreen.csproj", "{233719C2-515B-DC14-AD7D-CAC5F2A338B8}"
@@ -37,6 +39,10 @@ Global
 		{DAA9FEEA-37CD-C57B-60BF-8896746782EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DAA9FEEA-37CD-C57B-60BF-8896746782EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DAA9FEEA-37CD-C57B-60BF-8896746782EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C86609C-0B28-EDF0-F21B-2EF1951ECF7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C86609C-0B28-EDF0-F21B-2EF1951ECF7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C86609C-0B28-EDF0-F21B-2EF1951ECF7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C86609C-0B28-EDF0-F21B-2EF1951ECF7F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B780E53F-4A2F-1CAF-A69A-DAAE9745553A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B780E53F-4A2F-1CAF-A69A-DAAE9745553A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B780E53F-4A2F-1CAF-A69A-DAAE9745553A}.Release|Any CPU.ActiveCfg = Release|Any CPU
