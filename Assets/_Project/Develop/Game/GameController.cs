@@ -25,6 +25,8 @@ public class GameController : MonoBehaviour
 
     private List<Character> _characters;
 
+    public int PlayerKills;
+
     private Dictionary<int, int> _charactersKills = new Dictionary<int, int>();
 
     [SerializeField] private TMP_Text _roundText;
@@ -93,11 +95,12 @@ public class GameController : MonoBehaviour
         if (_characterToKill == null && _timer.GetTime > 0)
             return;
 
-        if(_characterToKill != null)
+        if (currentRound > 0 && _characterToKill != null)
+        {
             _killedCharacterID = _characterToKill.GetID;
 
-        if (currentRound > 0 && _characterToKill != null)
             KillCharacter(_characterToKill);
+        }
 
         ResetMap();
 
@@ -166,14 +169,17 @@ public class GameController : MonoBehaviour
     {
         int nextCharacterID = 0;
 
-        if(_currentCharacter.GetID == GetSortedCharacterIDs().Max())
+        if (_killedCharacterID > GetSortedCharacterIDs().Max() && currentRound == _killedCharacterID - 1)
+            return _characters.Find((x) => x.GetID == GetSortedCharacterIDs().Min());
+
+        if (_currentCharacter.GetID == GetSortedCharacterIDs().Max())
         {
             Debug.Log("Next CharacterID is: " + _characters.Find((x) => x.GetID == GetSortedCharacterIDs().Min()).GetID);
             return _characters.Find((x) => x.GetID == GetSortedCharacterIDs().Min());
         }
         else if (_currentCharacter == null)
         {
-            if(GetSortedCharacterIDs().Max() < _killedCharacterID) 
+            if (GetSortedCharacterIDs().Max() < _killedCharacterID) 
             {
                 Debug.Log("Next CharacterID is: " + _characters.Find((x) => x.GetID == GetSortedCharacterIDs().Min()));
                 return _characters.Find((x) => x.GetID == GetSortedCharacterIDs().Min());
@@ -213,8 +219,10 @@ public class GameController : MonoBehaviour
 
     private void ResetMap()
     {
+        Debug.Log("ResetMap");
         foreach (var character in _characters)
         {
+            Debug.Log("Char On Reset ID: " + character.GetID);
             character.GetComponent<Renderer>().material.color = Color.white;
 
             if (character.TryGetComponent(out Bot bot))
@@ -282,6 +290,8 @@ public class GameController : MonoBehaviour
 
         player.DeathAnimation();
 
+        Debug.Log("Add to kill: " + player.GetID);
+
         _messagePanel.AddMessage($"Игрок {_characterToKill.GetID} выбывает");
 
         if (stopRound) 
@@ -305,30 +315,30 @@ public class GameController : MonoBehaviour
             int final = 0;
             if (_characters.Count == 1 && _characters[0].TryGetComponent(out Player player))
             {
-               if (_charactersKills.TryGetValue(_mainPlayerID, out int value))
-               {
-                   final = 10 + value;
+               //if (_charactersKills.TryGetValue(_mainPlayerID, out int value))
+               //{
+                   final = 10 + PlayerKills;
 
-                   _resultValuesText.text = $"Победа: 10\nВыбил: {value}\n\nИтог: {final}";
+                   _resultValuesText.text = $"Победа: 10\nВыбил: {PlayerKills}\n\nИтог: {final}";
 
-                   UserData.Kills += value;
+                   UserData.Kills += PlayerKills;
                    UserData.Wins += 1;
-               }
+               //}
             }
             else
             {
-                if (_charactersKills.TryGetValue(_mainPlayerID, out int value))
-                {
-                    final = value - 1;
+                //if (_charactersKills.TryGetValue(_mainPlayerID, out int value))
+                //{
+                    final = PlayerKills - 1;
 
                     if (final < 0)
                         final = 0;
 
-                    _resultValuesText.text = $"Поражение: -1\nВыбил: {value}\n\nИтог: {final}";
+                    _resultValuesText.text = $"Поражение: -1\nВыбил: {PlayerKills}\n\nИтог: {final}";
 
-                    UserData.Kills += value;
+                    UserData.Kills += PlayerKills;
                     UserData.Defeats += 1;
-                }
+                //}
             }
 
         }));

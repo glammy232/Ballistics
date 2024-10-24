@@ -130,7 +130,7 @@ public sealed class Bot : Character
             else if (Vector3.Distance(targetPos, transform.position) > 7f && Vector3.Distance(targetPos, transform.position) < 11f)
             {
                 Debug.Log("<7 >11");
-                speed *= Random.Range(1.3f, 1.4f);//1.35f;
+                speed *= Random.Range(1.25f, 1.3f);//1.35f;
             }
             else if (Vector3.Distance(targetPos, transform.position) > 15f)
             {
