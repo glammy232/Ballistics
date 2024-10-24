@@ -11,10 +11,10 @@ public class Field : MonoBehaviour
 
     private void Awake()
     {
-        _activatePoopButton.onClick.AddListener(delegate { 
+        _activatePoopButton.onClick.AddListener(delegate {
 
-            if(ParentCharacter.TryGetComponent(out Player player))
-                _activatePoopButton.gameObject.SetActive(false); 
+            if (ParentCharacter.TryGetComponent(out Player player))
+                HidePoopButton();
         });
     }
 
@@ -24,6 +24,8 @@ public class Field : MonoBehaviour
     }
 
     public void HideHealthBar() => _healthBar.transform.parent.gameObject.SetActive(false);
+
+    public void HidePoopButton() => _activatePoopButton.gameObject.SetActive(false);
 
     public void ActivatePoopButtonObject() => _activatePoopButton.gameObject.SetActive(true);
 

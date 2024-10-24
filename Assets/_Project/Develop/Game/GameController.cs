@@ -64,8 +64,6 @@ public class GameController : MonoBehaviour
 
     [SerializeField] private List<Field> _fields;
 
-    private bool isRoundRunning = false;
-
     private void Awake() => Initialize(SettingsModel.NumOfPlayers);
 
     private void LateUpdate()
@@ -100,6 +98,11 @@ public class GameController : MonoBehaviour
         if(_characterToKill != null)
             _killedCharacterID = _characterToKill.GetID;
 
+        foreach (var character in _characters)
+        {
+            Debug.Log("Characters On StartRound: " + character.GetID);
+        }
+
         if (currentRound > 0)
             KillCharacter(_characterToKill);
 
@@ -107,7 +110,6 @@ public class GameController : MonoBehaviour
 
         if (_characters.Count == 1)
         {
-            Debug.Log("End2");
             PreEndGame();
             return;
         }
@@ -123,6 +125,8 @@ public class GameController : MonoBehaviour
         _messagePanel.AddMessage($"Раунд {currentRound}");
         _messagePanel.AddMessage("HATE!");
 
+        ResetMap();
+
         if (currentRound > 1)
             _currentCharacter = FindNextPlayer();
 
@@ -137,7 +141,6 @@ public class GameController : MonoBehaviour
         if(hasPlayer == false)
             PreEndGame();
 
-
         if (_currentCharacter != null)
         {
             SetPlayerFireAbility(_currentCharacter, true);
@@ -147,8 +150,6 @@ public class GameController : MonoBehaviour
 
             _timer.StartTimer((int)SettingsModel.RoundTime, delegate
             {
-                ResetMap();
-
                 if (_characterToKill == null)
                     AddPlayerToKillHim(_currentCharacter, true);
             });
@@ -157,7 +158,6 @@ public class GameController : MonoBehaviour
         }
         else
         {
-            Debug.Log("End");
             PreEndGame();
 
             return;
@@ -168,15 +168,18 @@ public class GameController : MonoBehaviour
     {
         int nextCharacterID = 0;
 
-        if (_currentCharacter is null)
-            Debug.Log("CURRENT CHARACTER IS NULL");
-        else if(_currentCharacter.GetID == GetSortedCharacterIDs().Max())
-            return _characters.Find((x) => x.GetID == GetSortedCharacterIDs().Min());
-
-        if (_currentCharacter == null)
+        if(_currentCharacter.GetID == GetSortedCharacterIDs().Max())
         {
-            if(GetSortedCharacterIDs().Max() < _killedCharacterID)
+            Debug.Log("Next CharacterID is: " + _characters.Find((x) => x.GetID == GetSortedCharacterIDs().Min()).GetID);
+            return _characters.Find((x) => x.GetID == GetSortedCharacterIDs().Min());
+        }
+        else if (_currentCharacter == null)
+        {
+            if(GetSortedCharacterIDs().Max() < _killedCharacterID) 
+            {
+                Debug.Log("Next CharacterID is: " + _characters.Find((x) => x.GetID == GetSortedCharacterIDs().Min()));
                 return _characters.Find((x) => x.GetID == GetSortedCharacterIDs().Min());
+            }
             else
             {
                 for (int i = 0; nextCharacterID <= _killedCharacterID; i++)
@@ -185,16 +188,12 @@ public class GameController : MonoBehaviour
                         break;
 
                     nextCharacterID = GetSortedCharacterIDs()[i];
-                    Debug.Log(nextCharacterID);
+
+                    Debug.Log("Next CharacterID is: " + _characters.Find((x) => x.GetID == nextCharacterID).GetID);
 
                     return _characters.Find((x) => x.GetID == nextCharacterID);
                 }
             }
-        }
-
-        if (GetSortedCharacterIDs().Max() == _currentCharacter.GetID)
-        {
-            nextCharacterID = GetSortedCharacterIDs().Min();
         }
         else
         {
@@ -204,24 +203,28 @@ public class GameController : MonoBehaviour
                     break;
 
                 nextCharacterID = GetSortedCharacterIDs()[i];
-                Debug.Log(nextCharacterID);
             }
         }
 
+        Debug.Log("NextPlayer ID: " + _characters.Find((x) => x.GetID == nextCharacterID).GetID);
         return _characters.Find((x) => x.GetID == nextCharacterID);
     }
 
-    private void ResetMap()// Подготавливает начальное состояние перед раундом
+    private void ResetMap()
     {
-        foreach (Character character in _characters)
+        GameObject[] characters = GameObject.FindGameObjectsWithTag("character");
+
+        foreach (GameObject character in characters)
         {
-            if(character != _characterToKill)
+            if(character.TryGetComponent(out Character charact))
+            {
                 character.GetComponent<Renderer>().material.color = Color.white;
 
-            if(character.TryGetComponent(out Bot bot))
-                bot.SetTargetCharacterToNull();
+                if (character.TryGetComponent(out Bot bot))
+                    bot.SetTargetCharacterToNull();
 
-            character.CanFire = false;
+                charact.CanFire = false;
+            }
         }
 
         Bullet[] bullets = GameObject.FindObjectsOfType<Bullet>();
@@ -249,27 +252,29 @@ public class GameController : MonoBehaviour
         Debug.Log("Player with ID: " + player.GetID + " Is Killed");
 
         player.GetField.HideHealthBar();
-        
-        _fields.Remove(player.GetField);
 
         player.GetComponent<Renderer>().material.color = Color.black;
 
+        _fields.Remove(player.GetField);
         //_charactersKills[_characters.IndexOf(player)] = player.Kills;
 
         _characters.Remove(player);
 
         Destroy(player);
-
     }
 
     private void StopRound()
     {
-        _timer.StopTimer();
-
-        Time.timeScale = 0f;
-
         StartCoroutine(CooldownBeetwenRounds(delegate
         {
+            _timer.StopTimer();
+
+            Time.timeScale = 0f;
+
+            foreach (var character in _characters)
+            {
+                Debug.Log("Characters On Stop Round: " + character.GetID);
+            }
         },
         delegate
         {
@@ -368,8 +373,6 @@ public class GameController : MonoBehaviour
 
     public Character GetCharacterWithMinHealth(Character execlude)
     {
-        Debug.Log("Character With Min Health Is: " + _characters.Find(x => x.GetHealth == GetMinHealthOfCharacters(execlude)).name);
-
         if(GetMinHealthOfCharacters(execlude) == 100)
             return GetRandomCharacter(execlude);
 
@@ -486,7 +489,6 @@ public class GameController : MonoBehaviour
         foreach (var character in _characters)
         {
             charactersIDs.Add(character.GetID);
-            Debug.Log("Characters ID " + character.GetID);
         }
 
         for (int i = 0; i < charactersIDs.Count; i++)
@@ -496,11 +498,6 @@ public class GameController : MonoBehaviour
         }
 
         sorted.Add(charactersIDs.Max());
-
-        foreach (var sort in sorted)
-        {
-            Debug.Log("Sorted " + sort);
-        }
 
         return sorted;
     }

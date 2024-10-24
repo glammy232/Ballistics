@@ -39,32 +39,23 @@ public sealed class Bot : Character
 
                 int rand = Random.Range(0, 2);
 
-                Debug.Log(_gotDamage + " " + GetID);
                 if (_gotDamage && GameController.Instance.GetCharacterWithMinHealth(this).GetHealth < 100)
                 {
                     if(rand == 0)
-                    {
                         _targetCharacter = _damager;
-                        Debug.Log("Damager IS: " + _targetCharacter.GetID);
-                    }
                     else
-                    {
                         _targetCharacter = GameController.Instance.GetCharacterWithMinHealth(this);
-                        Debug.Log("MinHealth IS: " + _targetCharacter.GetID);
-                    }
                 }
                 else if (_gotDamage && GameController.Instance.GetCharacterWithMinHealth(this).GetHealth == 100)
-                {
                     _targetCharacter = _damager;
-                    Debug.Log("Damager1 IS: " + _targetCharacter.GetID);
+                else if (!_gotDamage && GameController.Instance.GetCharacterWithMinHealth(this).GetHealth < 100)
+                {
+                    _targetCharacter = GameController.Instance.GetCharacterWithMinHealth(this);
                 }
                 else
                 {
                     if(_targetCharacter == null)
-                    {
                         _targetCharacter = GameController.Instance.GetRandomCharacter(this);
-                        Debug.Log("Rand IS: " + _targetCharacter.GetID);
-                    }
                 }
             }
         }
@@ -72,7 +63,7 @@ public sealed class Bot : Character
 
     private Character _targetCharacter;
 
-    public void SetTargetCharacterToNull() => _targetCharacter = null; 
+    public void SetTargetCharacterToNull() => _targetCharacter = null;
 
     public override void Fire()
     {
@@ -80,12 +71,13 @@ public sealed class Bot : Character
             return;
 
         if (_targetCharacter == null)
-        {
             return;
-        }
 
         if (hasPoop && _targetCharacter.GetHealth <= 50)
+        {
             UsePoop();
+            _field.HidePoopButton();
+        }
 
         _startTouchPosition = _targetCharacter.transform.position;
         _lastTouchPosition = transform.position;

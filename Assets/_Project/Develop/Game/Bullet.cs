@@ -32,7 +32,7 @@ public class Bullet : MonoBehaviour
 
             startSpeed = Mathf.Sqrt(n / m) / 5f;
 
-            startSpeed *= Random.Range(1f, 1.8f);
+            startSpeed *= Random.Range(3.5f, 4.5f);
         }
 
         Vector3 startDirection = Ballistics.StartDirection(maxHeight, startSpeed);
@@ -66,7 +66,7 @@ public class Bullet : MonoBehaviour
             if (_type == BulletType.Tomato)
                 player.GetDamage(_parentCharacter, player.GetMaxHealth / 10);
             else if(_type == BulletType.Poop)
-                player.GetDamage(_parentCharacter, player.GetMaxHealth / 10);
+                player.GetDamage(_parentCharacter, player.GetMaxHealth / 2);
 
             if (player.GetHealth <= 0)
                 _parentCharacter.Kills++;
