@@ -21,20 +21,23 @@ public class Bullet : MonoBehaviour
 
         _rb.velocity = Vector3.zero;
 
-        if (Vector3.Distance(targetPos, transform.position) < MIN_DISTANCE)
+       /* bool more = false;
+
+        if (Vector3.Distance(targetPos, transform.position) < MIN_DISTANCE && !parent.TryGetComponent(out Player player))
         {
-            float l = MIN_DISTANCE;
+            more = true;
+            float l = Vector3.Distance(targetPos, transform.position);
             float g = Mathf.Abs(Physics.gravity.y);
             float sin = Mathf.Sin(2 * angle * Mathf.Deg2Rad);
 
             float n = l * 2 * g;
             float m = sin * sin;
 
-            startSpeed = Mathf.Sqrt(n / m) / 5f;
+            startSpeed = Mathf.Sqrt(n / m);
 
-            startSpeed *= Random.Range(3.5f, 4.5f);
+            //startSpeed *= Random.Range(0.4f, 0.75f);
         }
-
+       */
         Vector3 startDirection = Ballistics.StartDirection(maxHeight, startSpeed);
 
         angle = angle * Mathf.Deg2Rad;

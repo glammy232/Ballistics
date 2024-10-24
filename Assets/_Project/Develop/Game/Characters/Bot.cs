@@ -5,10 +5,8 @@ using UnityEngine;
 
 public sealed class Bot : Character
 {
-    private const float MIN_DISTANCE_KOAF = 0.33f;
-    private const float MAX_DISTANCE_KOAF = 0.41f;
-
-    [SerializeField] private float _botSpeedKoaf;
+    private const float MIN_DISTANCE_KOAF = 0.205f;//0.165
+    private const float MAX_DISTANCE_KOAF = 0.225f;//0.205
 
     protected override bool hasPoop
     {
@@ -57,6 +55,8 @@ public sealed class Bot : Character
                     if(_targetCharacter == null)
                         _targetCharacter = GameController.Instance.GetRandomCharacter(this);
                 }
+
+                Debug.Log(_targetCharacter.GetID);
             }
         }
     }
@@ -99,7 +99,7 @@ public sealed class Bot : Character
                 bullet = Instantiate(_bulletTemplate, transform.position + new Vector3(0, transform.localScale.y / 2f + _bulletTemplate.transform.localScale.y / 2f, 0), Quaternion.identity);
             }
 
-            float speed = Vector3.Distance(_startTouchPosition, _lastTouchPosition) * speedKoaf * _botSpeedKoaf * Random.Range(MIN_DISTANCE_KOAF, MAX_DISTANCE_KOAF);
+            float speed = Vector3.Distance(_startTouchPosition, _lastTouchPosition) * speedKoaf * Random.Range(MIN_DISTANCE_KOAF, MAX_DISTANCE_KOAF);
 
             _startTouchPosition = _startTouchPosition - _lastTouchPosition;
             _lastTouchPosition = Vector3.zero;
@@ -115,6 +115,28 @@ public sealed class Bot : Character
             if (_startTouchPosition.z < _lastTouchPosition.z)
                 angle = 360 - angle;
 
+            Vector3 targetPos = _targetCharacter.transform.position;
+
+            if (Vector3.Distance(targetPos, transform.position) < 4f)
+            {
+                Debug.Log("<4");
+                speed *= Random.Range(1.75f, 1.85f);//1.8f;
+            }
+            else if (Vector3.Distance(targetPos, transform.position) < 7f)
+            {
+                Debug.Log("<7");
+                speed *= Random.Range(1.4f, 1.5f);//1.45f;
+            }
+            else if (Vector3.Distance(targetPos, transform.position) > 7f && Vector3.Distance(targetPos, transform.position) < 11f)
+            {
+                Debug.Log("<7 >11");
+                speed *= Random.Range(1.3f, 1.4f);//1.35f;
+            }
+            else if (Vector3.Distance(targetPos, transform.position) > 15f)
+            {
+                Debug.Log(">15");
+                speed *= Random.Range(0.9f, 1f);//0.8f;
+            }
 
             bullet.Initialize(SettingsModel.MaxHeight, speed, angle, this, _targetCharacter.transform.position);
 

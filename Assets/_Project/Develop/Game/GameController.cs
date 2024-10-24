@@ -25,7 +25,7 @@ public class GameController : MonoBehaviour
 
     private List<Character> _characters;
 
-    private int[] _charactersKills = new int[6];
+    private Dictionary<int, int> _charactersKills = new Dictionary<int, int>();
 
     [SerializeField] private TMP_Text _roundText;
 
@@ -54,6 +54,8 @@ public class GameController : MonoBehaviour
 
     [SerializeField] private TMP_Text _resultValuesText;
 
+    private int _mainPlayerID;
+
     #region Timer
 
     [SerializeField] private TimerModel _timer;
@@ -75,15 +77,11 @@ public class GameController : MonoBehaviour
     {
         Instance = this;
 
-        _charactersKills = new int[numOfPlayers];
-
         _exitButton.onClick.AddListener(delegate { SceneManager.LoadSceneAsync("Menu"); });
         
         CreatePlayers(numOfPlayers);
 
         ArrangePlayers();
-
-        ResetMap();
 
         GivePoopToRandomCharacter();
 
@@ -98,12 +96,7 @@ public class GameController : MonoBehaviour
         if(_characterToKill != null)
             _killedCharacterID = _characterToKill.GetID;
 
-        foreach (var character in _characters)
-        {
-            Debug.Log("Characters On StartRound: " + character.GetID);
-        }
-
-        if (currentRound > 0)
+        if (currentRound > 0 && _characterToKill != null)
             KillCharacter(_characterToKill);
 
         ResetMap();
@@ -125,8 +118,6 @@ public class GameController : MonoBehaviour
         _messagePanel.AddMessage($"Раунд {currentRound}");
         _messagePanel.AddMessage("HATE!");
 
-        ResetMap();
-
         if (currentRound > 1)
             _currentCharacter = FindNextPlayer();
 
@@ -146,12 +137,19 @@ public class GameController : MonoBehaviour
             SetPlayerFireAbility(_currentCharacter, true);
 
             if (_currentCharacter.CanFire == false)
+            {
+                if(_currentCharacter.TryGetComponent(out Bot bot))
+                    bot.SetTargetCharacterToNull();
+
                 _currentCharacter.CanFire = true;
+            }
 
             _timer.StartTimer((int)SettingsModel.RoundTime, delegate
             {
                 if (_characterToKill == null)
+                {
                     AddPlayerToKillHim(_currentCharacter, true);
+                }
             });
 
             return;
@@ -184,14 +182,14 @@ public class GameController : MonoBehaviour
             {
                 for (int i = 0; nextCharacterID <= _killedCharacterID; i++)
                 {
-                    if (nextCharacterID > _killedCharacterID)
-                        break;
-
                     nextCharacterID = GetSortedCharacterIDs()[i];
 
-                    Debug.Log("Next CharacterID is: " + _characters.Find((x) => x.GetID == nextCharacterID).GetID);
+                    if (nextCharacterID > _killedCharacterID)
+                    {
+                        return _characters.Find((x) => x.GetID == nextCharacterID);
+                    }
 
-                    return _characters.Find((x) => x.GetID == nextCharacterID);
+                    Debug.Log("Next CharacterID is: " + _characters.Find((x) => x.GetID == nextCharacterID).GetID);
                 }
             }
         }
@@ -200,7 +198,10 @@ public class GameController : MonoBehaviour
             for (int i = 0; nextCharacterID <= _currentCharacter.GetID; i++)
             {
                 if (nextCharacterID > _currentCharacter.GetID)
-                    break;
+                {
+                    Debug.Log("Next ID is: " + nextCharacterID);
+                    return _characters.Find((x) => x.GetID == nextCharacterID);
+                }
 
                 nextCharacterID = GetSortedCharacterIDs()[i];
             }
@@ -212,19 +213,14 @@ public class GameController : MonoBehaviour
 
     private void ResetMap()
     {
-        GameObject[] characters = GameObject.FindGameObjectsWithTag("character");
-
-        foreach (GameObject character in characters)
+        foreach (var character in _characters)
         {
-            if(character.TryGetComponent(out Character charact))
-            {
-                character.GetComponent<Renderer>().material.color = Color.white;
+            character.GetComponent<Renderer>().material.color = Color.white;
 
-                if (character.TryGetComponent(out Bot bot))
-                    bot.SetTargetCharacterToNull();
+            if (character.TryGetComponent(out Bot bot))
+                bot.SetTargetCharacterToNull();
 
-                charact.CanFire = false;
-            }
+            character.CanFire = false;
         }
 
         Bullet[] bullets = GameObject.FindObjectsOfType<Bullet>();
@@ -256,7 +252,8 @@ public class GameController : MonoBehaviour
         player.GetComponent<Renderer>().material.color = Color.black;
 
         _fields.Remove(player.GetField);
-        //_charactersKills[_characters.IndexOf(player)] = player.Kills;
+
+        _charactersKills.Add(player.GetID, player.Kills);
 
         _characters.Remove(player);
 
@@ -270,11 +267,6 @@ public class GameController : MonoBehaviour
             _timer.StopTimer();
 
             Time.timeScale = 0f;
-
-            foreach (var character in _characters)
-            {
-                Debug.Log("Characters On Stop Round: " + character.GetID);
-            }
         },
         delegate
         {
@@ -288,7 +280,7 @@ public class GameController : MonoBehaviour
     {
         _characterToKill = player;
 
-        //player.DeathAnimation();
+        player.DeathAnimation();
 
         _messagePanel.AddMessage($"Игрок {_characterToKill.GetID} выбывает");
 
@@ -306,55 +298,37 @@ public class GameController : MonoBehaviour
     {
         StartCoroutine(EndGame(delegate
         {
-            List<int> isDead = new List<int>();
-            for(int i = 0; i < _characters.Count; i++)
-            {
-                if (_characters[i].GetHealth <= 0)
-                    isDead.Add(_characters[i].GetID);
-            }
             _endCanvas.gameObject.SetActive(true);
 
             GameObject.Find("Map").SetActive(false);
 
             int final = 0;
-            if (_characters[0].GetID == 1 && isDead.Contains(1) == false)
+            if (_characters.Count == 1 && _characters[0].TryGetComponent(out Player player))
             {
-                Character charact = _characters[0];
+               if (_charactersKills.TryGetValue(_mainPlayerID, out int value))
+               {
+                   final = 10 + value;
 
-                foreach (var character in _characters)
-                {
-                    if (character.TryGetComponent(out Player player))
-                    {
-                        charact = character;
-                    }
-                }
+                   _resultValuesText.text = $"Победа: 10\nВыбил: {value}\n\nИтог: {final}";
 
-                final = 10 + charact.Kills;
-                _resultValuesText.text = $"Победа: 10\nВыбил: {_charactersKills[0]}\n\nИтог: {final}";
-                UserData.Kills += charact.Kills;
-                UserData.Wins += 1;
+                   UserData.Kills += value;
+                   UserData.Wins += 1;
+               }
             }
             else
             {
-                final = _charactersKills[0] - 1;
-
-                if (final < 0)
-                    final = 0;
-
-                _resultValuesText.text = $"Поражение: -1\nВыбил: {_charactersKills[0]}\n\nИтог: {final}";
-
-                Character charact = _characters[0];
-
-                foreach (var character in _characters)
+                if (_charactersKills.TryGetValue(_mainPlayerID, out int value))
                 {
-                    if(character.TryGetComponent(out Player player))
-                    {
-                        charact = character;
-                    }
-                }
+                    final = value - 1;
 
-                UserData.Kills += charact.Kills;
-                UserData.Defeats += 1;
+                    if (final < 0)
+                        final = 0;
+
+                    _resultValuesText.text = $"Поражение: -1\nВыбил: {value}\n\nИтог: {final}";
+
+                    UserData.Kills += value;
+                    UserData.Defeats += 1;
+                }
             }
 
         }));
@@ -364,9 +338,14 @@ public class GameController : MonoBehaviour
 
     public Character GetRandomCharacter(Character execlude)
     {
-        List<Character> characters = _characters;
+        List<Character> characters = new List<Character>();
 
-        _characters.Remove(execlude);
+        for (int i = 0; i < _characters.Count; i++)
+        {
+            characters.Add(_characters[i]);
+        }
+
+        characters.Remove(execlude);
 
         return characters[UnityEngine.Random.Range(0, characters.Count)];
     }
@@ -397,7 +376,7 @@ public class GameController : MonoBehaviour
         SceneManager.LoadSceneAsync("Menu");
     }
 
-    private void CreatePlayers(int numOfPlayers)
+    private void CreatePlayers(int numOfPlayers)//DELETE
     {
         _characters = new List<Character>();
 
@@ -429,6 +408,11 @@ public class GameController : MonoBehaviour
             newCharacter.transform.parent = GameObject.Find("Map").transform;
 
             _characters.Add(newCharacter);
+
+            if (newCharacter.TryGetComponent(out Player player))//DELETE
+            {
+                _mainPlayerID = player.GetID;
+            }
 
             usedIDs.Remove(newID);
         }
@@ -482,8 +466,6 @@ public class GameController : MonoBehaviour
 
     private List<int> GetSortedCharacterIDs()
     {
-        List<int> sorted = new List<int>();
-
         List<int> charactersIDs = new List<int>();
 
         foreach (var character in _characters)
@@ -491,15 +473,9 @@ public class GameController : MonoBehaviour
             charactersIDs.Add(character.GetID);
         }
 
-        for (int i = 0; i < charactersIDs.Count; i++)
-        {
-            sorted.Add(charactersIDs.Min());
-            charactersIDs.Remove(charactersIDs.Min());
-        }
+        charactersIDs.Sort();
 
-        sorted.Add(charactersIDs.Max());
-
-        return sorted;
+        return charactersIDs;
     }
 
     private IEnumerator EndGame(Action action)
