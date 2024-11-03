@@ -30,6 +30,9 @@ public sealed class Bot : Character
         {            
             _canFire = value;
 
+            if (value && GetID == GameController.Instance.GetCurrentCharacterID)
+                GetComponent<Renderer>().material.color = Color.green;
+
             if (value == true)
             {
                 if (_targetCharacter != null)
@@ -119,26 +122,22 @@ public sealed class Bot : Character
 
             if (Vector3.Distance(targetPos, transform.position) < 4f)
             {
-                Debug.Log("<4");
                 speed *= Random.Range(1.75f, 1.85f);//1.8f;
             }
             else if (Vector3.Distance(targetPos, transform.position) < 7f)
             {
-                Debug.Log("<7");
                 speed *= Random.Range(1.4f, 1.5f);//1.45f;
             }
             else if (Vector3.Distance(targetPos, transform.position) > 7f && Vector3.Distance(targetPos, transform.position) < 11f)
             {
-                Debug.Log("<7 >11");
                 speed *= Random.Range(1.25f, 1.3f);//1.35f;
             }
             else if (Vector3.Distance(targetPos, transform.position) > 15f)
             {
-                Debug.Log(">15");
                 speed *= Random.Range(0.9f, 1f);//0.8f;
             }
 
-            bullet.Initialize(SettingsModel.MaxHeight, speed, angle, this, _targetCharacter.transform.position);
+            bullet.Initialize(speed, angle, this);
 
             _startTouchPosition = Vector2.zero;
 

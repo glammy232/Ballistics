@@ -65,15 +65,17 @@
     <Compile Include="Assets\_Project\Develop\UserData\UserData.cs" />
     <Compile Include="Assets\_Project\Develop\Game\Characters\Player.cs" />
     <Compile Include="Assets\_Project\Develop\Game\Characters\InitializationValueObject.cs" />
+    <Compile Include="Assets\_Project\Develop\Game\GameControllers\GameController.cs" />
     <Compile Include="Assets\_Project\Develop\Game\Utils\PlayerPlacemaker.cs" />
     <Compile Include="Assets\_Project\Develop\Game\Timer\TimerModel.cs" />
     <Compile Include="Assets\_Project\Develop\Game\Utils\Ballistics.cs" />
-    <Compile Include="Assets\_Project\Develop\Game\GameController.cs" />
+    <Compile Include="Assets\_Project\Develop\Game\GameControllers\CharactersController.cs" />
     <Compile Include="Assets\_Project\Develop\Menu\Settings\SettingsViewModel.cs" />
     <Compile Include="Assets\_Project\Develop\Menu\Settings\SettingsView.cs" />
     <Compile Include="Assets\_Project\Develop\Game\Timer\TimerView.cs" />
     <Compile Include="Assets\_Project\Develop\Game\Characters\Bot.cs" />
     <Compile Include="Assets\_Project\Develop\Menu\Settings\SettingsModel.cs" />
+    <Compile Include="Assets\_Project\Develop\Game\GameControllers\RoundsController.cs" />
     <Compile Include="Assets\_Project\Develop\Game\Field.cs" />
     <Compile Include="Assets\_Project\Develop\Game\Bullet.cs" />
     <Compile Include="Assets\_Project\Develop\Game\Characters\Character.cs" />
@@ -446,6 +448,14 @@
     </Reference>
     <Reference Include="DOTweenPro">
       <HintPath>Assets\Plugins\Demigiant\DOTweenPro\DOTweenPro.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEditor.iOS.Extensions.Xcode">
+      <HintPath>C:\Program Files\Unity\Hub\Editor\2022.3.27f1\Editor\Data\PlaybackEngines\iOSSupport\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEditor.iOS.Extensions.Common">
+      <HintPath>C:\Program Files\Unity\Hub\Editor\2022.3.27f1\Editor\Data\PlaybackEngines\iOSSupport\UnityEditor.iOS.Extensions.Common.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.Android.Types">

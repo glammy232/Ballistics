@@ -13,7 +13,7 @@ public class Field : MonoBehaviour
     {
         _activatePoopButton.onClick.AddListener(delegate {
 
-            if (ParentCharacter.TryGetComponent(out Player player))
+            if (ParentCharacter.TryGetComponent(out Player player) && player.CanFire)
                 HidePoopButton();
         });
     }

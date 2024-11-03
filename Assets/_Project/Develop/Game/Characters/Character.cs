@@ -106,6 +106,9 @@ public abstract class Character : MonoBehaviour
         set
         {
             _canFire = value;
+
+            if (value && GetID == GameController.Instance.GetCurrentCharacterID)
+                GetComponent<Renderer>().material.color = Color.green;
         }
     }
 
@@ -171,7 +174,7 @@ public abstract class Character : MonoBehaviour
 
     public virtual void UsePoop()
     {
-        if (!_hasPoop)
+        if (!_hasPoop || CanFire == false)
             return;
 
         _hasPoop = false;
@@ -229,7 +232,7 @@ public abstract class Character : MonoBehaviour
                 angle = 360 - angle;
 
 
-            bullet.Initialize(SettingsModel.MaxHeight, speed, angle, this, target);
+            bullet.Initialize(speed, angle, this);
 
             _startTouchPosition = Vector2.zero;
 
