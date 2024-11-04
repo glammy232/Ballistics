@@ -18,15 +18,15 @@ public class GameController : MonoBehaviour
 
     public static GameController Instance;
 
+    private GameConfig _gameConfig;
+
     [Header("Characters Settings")]
 
-    [SerializeField] private CharactersController _charactersController;
+    private CharactersController _charactersController;
 
     [Header("Rounds Settings")]
 
     [SerializeField] private RoundsController _roundsController;
-
-    [SerializeField] private Transform _ground;
 
     private List<Character> _characters;
 
@@ -54,6 +54,7 @@ public class GameController : MonoBehaviour
     private Character _characterToKill;
 
     [Header("UI")]
+    #region UI
 
     [SerializeField] private MessagePanel _messagePanel;
 
@@ -62,14 +63,15 @@ public class GameController : MonoBehaviour
     [SerializeField] private GameObject _endCanvas;
 
     [SerializeField] private TMP_Text _resultValuesText;
-
+    #endregion
     [Header("Timer")]
-
+    #region Timer
     [SerializeField] private TimerModel _timer;
-
+    #endregion
     [Header("Fields")]
-
+    #region Fields
     [SerializeField] private List<Field> _fields;
+    #endregion
 
     private void Awake() => Initialize(4);
 
@@ -107,6 +109,11 @@ public class GameController : MonoBehaviour
         InitializeCharacters(numOfPlayers);
 
         StartRound();
+    }
+
+    private void InitializeControllers()
+    {
+        BotConfig botConfig = new BotConfig(100); 
     }
 
     private void InitializeUI()

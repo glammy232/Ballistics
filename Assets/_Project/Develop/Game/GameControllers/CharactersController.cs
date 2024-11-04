@@ -2,11 +2,22 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class CharactersController : MonoBehaviour
+public class CharactersController
 {
-    [SerializeField] private Player _playerTemplate;
+    private BotConfig _botConfig;
 
-    [SerializeField] private Bot _botTemplate;
+    private Player _playerTemplate;
+
+    private Bot _botTemplate;
+
+    public CharactersController(BotConfig botConfig, Player playerTemplate, Bot botTemplate)
+    {
+        _botConfig = botConfig;
+
+        _playerTemplate = playerTemplate;
+
+        _botTemplate = botTemplate;
+    }
 
     public List<Character> CreateCharacters(int numOfPlayers, List<Character> characters, List<Field> fields)
     {
@@ -25,11 +36,15 @@ public class CharactersController : MonoBehaviour
             Character newCharacter;
 
             if (i == 0)
-                newCharacter = Instantiate(_playerTemplate);
+                newCharacter = GameObject.Instantiate(_playerTemplate);
             else
-                newCharacter = Instantiate(_botTemplate);
+            {
+                newCharacter = GameObject.Instantiate(_botTemplate);
 
-            int newID = usedIDs[UnityEngine.Random.Range(0, usedIDs.Count)];
+                newCharacter.GetComponent<Bot>().Initialize(_botConfig);
+            }
+
+            int newID = usedIDs[Random.Range(0, usedIDs.Count)];
 
             InitializationValueObject valueObject = new InitializationValueObject(fields[newID], newID + 1, SettingsModel.FireCooldown, 0f, 100f, 100f, 100, SettingsModel.SpeedKoaf);
 
@@ -50,10 +65,6 @@ public class CharactersController : MonoBehaviour
         {
             usedIDs.Add(characters[i].GetID);
         }
-
-        //currentCharacter = characters.Find((x) => x.GetID == usedIDs.Min());
-
-        //currentCharacter.GetComponent<Renderer>().material.color = Color.red;
 
         return characters;
     }
@@ -153,7 +164,7 @@ public class CharactersController : MonoBehaviour
 
         characters.Remove(character);
 
-        Destroy(character);
+        GameObject.Destroy(character);
     }
 
     public List<int> GetSortedCharacterIDs(List<Character> characters)

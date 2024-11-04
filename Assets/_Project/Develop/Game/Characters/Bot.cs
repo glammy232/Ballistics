@@ -8,6 +8,13 @@ public sealed class Bot : Character
     private const float MIN_DISTANCE_KOAF = 0.205f;//0.165
     private const float MAX_DISTANCE_KOAF = 0.225f;//0.205
 
+    private BotConfig _config;
+
+    public void Initialize(BotConfig config)
+    {
+        _config = config;
+    }
+
     protected override bool hasPoop
     {
         get => _hasPoop;
