@@ -62,6 +62,7 @@
   <ItemGroup>
     <Compile Include="Assets\_Project\Develop\Game\Timer\TimerViewModel.cs" />
     <Compile Include="Assets\_Project\Develop\Game\MessagePanel.cs" />
+    <Compile Include="Assets\_Project\Develop\Game\GameEntryPoint.cs" />
     <Compile Include="Assets\_Project\Develop\UserData\UserData.cs" />
     <Compile Include="Assets\_Project\Develop\Game\Characters\Player.cs" />
     <Compile Include="Assets\_Project\Develop\Game\Characters\InitializationValueObject.cs" />

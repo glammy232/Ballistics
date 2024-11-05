@@ -26,11 +26,7 @@ public class GameController : MonoBehaviour
 
     [Header("Rounds Settings")]
 
-    [SerializeField] private RoundsController _roundsController;
-
-    private List<Character> _characters;
-
-    private Dictionary<int, int> _charactersKills = new Dictionary<int, int>();
+    private RoundsController _roundsController;
 
     [SerializeField] private TMP_Text _roundText;
 
@@ -45,14 +41,6 @@ public class GameController : MonoBehaviour
         }
     }
 
-    private Character _currentCharacter;
-
-    public int GetCurrentCharacterID => _currentCharacter.GetID;
-
-    private int _killedCharacterID;
-
-    private Character _characterToKill;
-
     [Header("UI")]
     #region UI
 
@@ -66,31 +54,33 @@ public class GameController : MonoBehaviour
     #endregion
     [Header("Timer")]
     #region Timer
+
     [SerializeField] private TimerModel _timer;
+
+    public int GetTime => _timer.GetTime;
+
     #endregion
     [Header("Fields")]
     #region Fields
     [SerializeField] private List<Field> _fields;
     #endregion
 
-    private void Awake() => Initialize(4);
-
-    private void Initialize(int numOfPlayers)
+    public void Initialize(GameConfig gameConfig)
     {
         Instance = this;
 
+        _gameConfig = gameConfig;
+
         OnRoundStarting += delegate 
         {
-            if (currentRound > 0 && _characterToKill != null)
+            if (currentRound > 0)
             {
-                _killedCharacterID = _characterToKill.GetID;
-
-                _charactersController.KillCharacter(ref _characters, ref _characterToKill, ref _fields);
+                _charactersController.KillCharacter();
             }
 
-            _roundsController.ResetMap(_characters);
+            _roundsController.ResetMap(_charactersController.GetCharacters);
 
-            new PlayerPlacemaker().MovePlayersLittle(_characters, new BordersPlacement(2f, 2f, -2f, -2f));
+            new PlayerPlacemaker().MovePlayersLittle(_charactersController.GetCharacters, new BordersPlacement(2f, 2f, -2f, -2f));
 
             currentRound++;
 
@@ -100,13 +90,10 @@ public class GameController : MonoBehaviour
 
         OnRoundStop += delegate
         {
-            if (_characterToKill == null)
-                AddPlayerToKillHim(_currentCharacter, true);
+       
         };
 
         InitializeUI();
-
-        InitializeCharacters(numOfPlayers);
 
         StartRound();
     }
@@ -124,33 +111,17 @@ public class GameController : MonoBehaviour
         });
     }
 
-    private void InitializeCharacters(int numOfPlayers)
-    {
-        _characters = _charactersController.CreateCharacters(numOfPlayers, _characters, _fields);
-
-        HideFieldHealthBars();
-
-        _charactersController.ArrangeCharacters(_characters);
-
-        _charactersController.GivePoopToRandomCharacter(_characters);
-
-    }
-
     private void StartRound()
     {
-        if (canStartRound() == false)
-            return;
+        //if (canStartRound() == false)
+          //  return;
 
         OnRoundStarting?.Invoke();
 
-        if (currentRound > 1)
-            OnCurrentCharacterSelected?.Invoke(_currentCharacter);
+        
+        _charactersController.GetCurrentCharacter.CanFire = true;
 
-        _currentCharacter = _charactersController.FindNextPlayer(_killedCharacterID, currentRound, _characters, _currentCharacter);
-
-        _currentCharacter.CanFire = true;
-
-        if (hasPlayer() == false || _currentCharacter == null)
+        if (/*hasPlayer() == false || */_charactersController.GetCurrentCharacter == null)
         {
             StartCoroutine(EndGame());
             return;
@@ -161,7 +132,7 @@ public class GameController : MonoBehaviour
             StartCoroutine(StopRound());
         });
 
-        bool canStartRound()
+        /*bool canStartRound()
         {
             if (_characterToKill == null && _timer.GetTime > 0)
                 return false;
@@ -169,9 +140,9 @@ public class GameController : MonoBehaviour
                 return false;
             else
                 return true;
-        }
+        }*/
 
-        bool hasPlayer()
+        /*bool hasPlayer()
         {
             foreach (Character character in _characters)
             {
@@ -180,10 +151,10 @@ public class GameController : MonoBehaviour
             }
 
             return false;
-        }
+        }*/
     }
 
-    public void AddPlayerToKillHim(Character player, bool stopRound)
+    /*public void AddPlayerToKillHim(Character player, bool stopRound)
     {
         _characterToKill = player;
 
@@ -193,20 +164,11 @@ public class GameController : MonoBehaviour
 
         if (stopRound)
             StartCoroutine(StopRound());
-    }
+    }*/
 
-    private void HideFieldHealthBars()
-    {
-        foreach (var field in _fields)
-        {
-            if(field.ParentCharacter == null)
-                field.HideHealthBar();
-        }
-    }
+    public Character GetRandomCharacter(Character exclude) => _charactersController.GetRandomCharacter(exclude);
 
-    public Character GetRandomCharacter(Character exclude) => _charactersController.GetRandomCharacter(exclude, ref _characters);
-
-    public Character GetCharacterWithMinHealth(Character exclude) => _charactersController.GetCharacterWithMinHealth(exclude, ref _characters, _characters);
+    public Character GetCharacterWithMinHealth(Character exclude) => _charactersController.GetCharacterWithMinHealth(exclude);
 
     private IEnumerator StopRound()
     {
@@ -232,7 +194,7 @@ public class GameController : MonoBehaviour
         GameObject.Find("Map").SetActive(false);
 
         int final = 0;
-        if (_characters.Count == 1 && _characters[0].TryGetComponent(out Player player))
+        if (_charactersController.GetCharacters.Count == 1 && _charactersController.GetCharacters[0].TryGetComponent(out Player player))
         {
             //final = 10 + PlayerKills;
 

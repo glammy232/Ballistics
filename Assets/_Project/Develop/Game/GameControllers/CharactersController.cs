@@ -1,5 +1,5 @@
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class CharactersController
@@ -10,28 +10,49 @@ public class CharactersController
 
     private Bot _botTemplate;
 
-    public CharactersController(BotConfig botConfig, Player playerTemplate, Bot botTemplate)
+    private List<Character> _characters;
+    public List<Character> GetCharacters => _characters;
+
+    private Character _currentCharacter;
+
+    public Character GetCurrentCharacter => _currentCharacter;
+
+    private int _killedCharacterID;
+
+    private List<Field> _fields;
+
+    public CharactersController(GameConfig gameConfig, BotConfig botConfig, Player playerTemplate, Bot botTemplate, List<Field> fields)
     {
         _botConfig = botConfig;
 
         _playerTemplate = playerTemplate;
 
         _botTemplate = botTemplate;
+
+        _fields = fields;
+
+        _characters = CreateCharacters(gameConfig);
+
+        HideFieldHealthBars();
+
+        ArrangeCharacters(_characters);
+
+        GivePoopToRandomCharacter(_characters);
     }
 
-    public List<Character> CreateCharacters(int numOfPlayers, List<Character> characters, List<Field> fields)
+    public List<Character> CreateCharacters(GameConfig gameConfig)
     {
-        characters = new List<Character>();
+        List<Character> characters = new List<Character>();
 
         List<int> usedIDs = new List<int>();
 
-        for (int i = 0; i < fields.Count; i++)
+        for (int i = 0; i < _fields.Count; i++)
         {
             int j = i;
             usedIDs.Add(j);
         }
 
-        for (int i = 0; i < numOfPlayers; i++)
+        for (int i = 0; i < gameConfig.NumOfPlayers; i++)
         {
             Character newCharacter;
 
@@ -44,11 +65,11 @@ public class CharactersController
                 newCharacter.GetComponent<Bot>().Initialize(_botConfig);
             }
 
-            int newID = usedIDs[Random.Range(0, usedIDs.Count)];
+            int newID = usedIDs[UnityEngine.Random.Range(0, usedIDs.Count)];
 
-            InitializationValueObject valueObject = new InitializationValueObject(fields[newID], newID + 1, SettingsModel.FireCooldown, 0f, 100f, 100f, 100, SettingsModel.SpeedKoaf);
+            InitializationValueObject valueObject = new InitializationValueObject(_fields[newID], newID + 1, SettingsModel.FireCooldown, 0f, 100f, 100f, 100, SettingsModel.SpeedKoaf);
 
-            fields[newID].ParentCharacter = newCharacter;
+            _fields[newID].ParentCharacter = newCharacter;
 
             newCharacter.Initialize(valueObject);
 
@@ -88,90 +109,71 @@ public class CharactersController
         }
     }
 
-    public void GivePoopToRandomCharacter(List<Character> characters) => characters[Random.Range(0, characters.Count)].SetHasPoop(true);
+    public void GivePoopToRandomCharacter(List<Character> characters) => characters[UnityEngine.Random.Range(0, characters.Count)].SetHasPoop(true);
 
-    public Character FindCharacterToKill(List<Character> characters, Character currentCharacter)
+    public Character SelectCurrentCharacter(int currentRound)
     {
-        Character character = characters.Find((x) => x.GetHealth == 0);
-
-        if (character == null)
-            character = currentCharacter;
-
+        Character character = null;
         return character;
     }
 
-    public Character FindNextPlayer(int killedCharacterID, int currentRound, List<Character> characters, Character currentCharacter)
-    {
-        int nextCharacterID = 0;
-
-        List<int> characterIDs = GetSortedCharacterIDs(characters);
-
-        if (killedCharacterID > characterIDs.Max() || currentCharacter == null || currentCharacter.GetID == characterIDs.Max() || currentCharacter == null && characterIDs.Max() < killedCharacterID)
-            return characters.Find((x) => x.GetID == characterIDs.Min());
-        else if (currentCharacter == null && characterIDs.Max() >= killedCharacterID)
-        {
-            for (int i = 0; nextCharacterID <= killedCharacterID; i++)
-            {
-                nextCharacterID = GetSortedCharacterIDs(characters)[i];
-
-                if (nextCharacterID > killedCharacterID)
-                    return characters.Find((x) => x.GetID == nextCharacterID);
-            }
-        }
-        else
-        {
-            for (int i = 0; nextCharacterID <= currentCharacter.GetID; i++)
-            {
-                if (nextCharacterID > currentCharacter.GetID)
-                    return characters.Find((x) => x.GetID == nextCharacterID);
-
-                nextCharacterID = GetSortedCharacterIDs(characters)[i];
-            }
-        }
-
-        return characters.Find((x) => x.GetID == nextCharacterID);
-    }
-
-    public Character GetRandomCharacter(Character execlude, ref List<Character> characters)
+    public Character GetRandomCharacter(Character execlude)
     {
         List<Character> newCharacters = new List<Character>();
 
-        for (int i = 0; i < characters.Count; i++)
+        for (int i = 0; i < _characters.Count; i++)
         {
-            newCharacters.Add(characters[i]);
+            newCharacters.Add(_characters[i]);
         }
 
         newCharacters.Remove(execlude);
 
-        return newCharacters[Random.Range(0, newCharacters.Count)];
+        return newCharacters[UnityEngine.Random.Range(0, newCharacters.Count)];
     }
 
-    public Character GetCharacterWithMinHealth(Character execlude, ref List<Character> refCharacters, List<Character> characters)
+    public Character GetCharacterWithMinHealth(Character execlude)
     {
-        if (GetMinHealthOfCharacters(execlude, refCharacters) == 100)
-            return GetRandomCharacter(execlude, ref refCharacters);
+        if (GetMinHealthOfCharacters(execlude) == 100)
+            return GetRandomCharacter(execlude);
         
-        return characters.Find(x => x.GetHealth == GetMinHealthOfCharacters(execlude, characters));
+        return _characters.Find(x => x.GetHealth == GetMinHealthOfCharacters(execlude));
     }
 
-    public void KillCharacter(ref List<Character> characters, ref Character character, ref List<Field> fields)
+    public void KillCharacter()
     {
+        Character character = GetCharacterToKill();
+
         character.GetField.HideHealthBar();
 
         character.GetComponent<Renderer>().material.color = Color.black;
 
-        fields.Remove(character.GetField);
+        _fields.Remove(character.GetField);
 
-        characters.Remove(character);
+        _characters.Remove(character);
 
         GameObject.Destroy(character);
     }
 
-    public List<int> GetSortedCharacterIDs(List<Character> characters)
+    private Character GetCharacterToKill()
+    {
+        Character character = null;
+
+        if (GameController.Instance.GetTime <= 0)
+            character = _currentCharacter;
+        else
+            character = _characters.Find((x) => x.GetHealth == 0);
+
+        if (character == null)
+            throw new NullReferenceException("PROBLEM IN GetCharacterToKill Method");
+
+        return character;
+    }
+
+    public List<int> GetSortedCharacterIDs()
     {
         List<int> charactersIDs = new List<int>();
 
-        foreach (var character in characters)
+        foreach (var character in _characters)
         {
             charactersIDs.Add(character.GetID);
         }
@@ -181,16 +183,25 @@ public class CharactersController
         return charactersIDs;
     }
 
-    public int GetMinHealthOfCharacters(Character execlude, List<Character> characters)
+    public int GetMinHealthOfCharacters(Character exclude)
     {
         int minHealth = 100;
 
-        foreach (var character in characters)
+        foreach (var character in _characters)
         {
-            if (minHealth > character.GetHealth && character.GetID != execlude.GetID && character.GetHealth > 0)
+            if (minHealth > character.GetHealth && character.GetID != exclude.GetID && character.GetHealth > 0)
                 minHealth = character.GetHealth;
         }
 
         return minHealth;
+    }
+
+    private void HideFieldHealthBars()
+    {
+        foreach (var field in _fields)
+        {
+            if (field.ParentCharacter == null)
+                field.HideHealthBar();
+        }
     }
 }

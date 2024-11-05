@@ -41,7 +41,7 @@ public abstract class Character : MonoBehaviour
         {
             GetComponent<Renderer>().material.color = Color.black;
 
-            GameController.Instance.AddPlayerToKillHim(this, true);
+            //GameController.Instance.AddPlayerToKillHim(this, true);
         }
     }
 
@@ -107,8 +107,8 @@ public abstract class Character : MonoBehaviour
         {
             _canFire = value;
 
-            if (value && GetID == GameController.Instance.GetCurrentCharacterID)
-                GetComponent<Renderer>().material.color = Color.green;
+            //if (value && GetID == GameController.Instance.GetCurrentCharacterID)
+              //  GetComponent<Renderer>().material.color = Color.green;
         }
     }
 

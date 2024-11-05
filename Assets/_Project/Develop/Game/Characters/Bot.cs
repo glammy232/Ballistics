@@ -37,8 +37,8 @@ public sealed class Bot : Character
         {            
             _canFire = value;
 
-            if (value && GetID == GameController.Instance.GetCurrentCharacterID)
-                GetComponent<Renderer>().material.color = Color.green;
+            //if (value && GetID == GameController.Instance.GetCurrentCharacterID)
+              //  GetComponent<Renderer>().material.color = Color.green;
 
             if (value == true)
             {

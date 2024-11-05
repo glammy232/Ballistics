@@ -7,6 +7,15 @@ public class GameConfig
     public int Complexity;
 
     public int NumOfPlayers;
+
+    public GameConfig(int level, int complexity, int numOfPlayers)
+    {
+        Level = level;
+
+        Complexity = complexity;
+
+        NumOfPlayers = numOfPlayers;
+    }
 }
 
 public class BotConfig
