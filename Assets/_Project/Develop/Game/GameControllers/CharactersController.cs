@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class CharactersController
@@ -14,8 +15,9 @@ public class CharactersController
     public List<Character> GetCharacters => _characters;
 
     private Character _currentCharacter;
-
     public Character GetCurrentCharacter => _currentCharacter;
+
+    private int _lastCharacterId;
 
     private int _killedCharacterID;
 
@@ -32,6 +34,8 @@ public class CharactersController
         _fields = fields;
 
         _characters = CreateCharacters(gameConfig);
+
+        _currentCharacter = SelectCurrentCharacter(0);
 
         HideFieldHealthBars();
 
@@ -113,8 +117,14 @@ public class CharactersController
 
     public Character SelectCurrentCharacter(int currentRound)
     {
-        Character character = null;
-        return character;
+        if (currentRound == 0)
+            return _characters.Find((ch) => ch.GetID == GetSortedCharacterIDs().Min());
+        else if (GetCurrentCharacter == null && _characters.Count > _lastCharacterId + 1)
+            return _characters.Find((ch) => ch.GetID == _lastCharacterId + 1);
+        else if (_lastCharacterId + 1 > _characters.Count)
+            return _characters[0];
+        else
+            return _characters[_lastCharacterId + 1];
     }
 
     public Character GetRandomCharacter(Character execlude)

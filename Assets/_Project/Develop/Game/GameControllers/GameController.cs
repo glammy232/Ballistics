@@ -55,7 +55,7 @@ public class GameController : MonoBehaviour
     [Header("Timer")]
     #region Timer
 
-    [SerializeField] private TimerModel _timer;
+    private TimerModel _timer;
 
     public int GetTime => _timer.GetTime;
 
@@ -65,9 +65,15 @@ public class GameController : MonoBehaviour
     [SerializeField] private List<Field> _fields;
     #endregion
 
-    public void Initialize(GameConfig gameConfig)
+    public void Initialize(GameConfig gameConfig, CharactersController charactersController, RoundsController roundsController, TimerModel timerModel)
     {
         Instance = this;
+
+        _charactersController = charactersController;
+
+        _roundsController = roundsController;
+
+        _timer = timerModel;
 
         _gameConfig = gameConfig;
 
@@ -96,11 +102,6 @@ public class GameController : MonoBehaviour
         InitializeUI();
 
         StartRound();
-    }
-
-    private void InitializeControllers()
-    {
-        BotConfig botConfig = new BotConfig(100); 
     }
 
     private void InitializeUI()

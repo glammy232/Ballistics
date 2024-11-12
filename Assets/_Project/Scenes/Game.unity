@@ -133,7 +133,6 @@ GameObject:
   m_Component:
   - component: {fileID: 18700166}
   - component: {fileID: 18700165}
-  - component: {fileID: 18700167}
   - component: {fileID: 18700168}
   m_Layer: 0
   m_Name: Controllers
@@ -154,15 +153,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16695d2c78e84344890f80c7c92518db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _charactersController: {fileID: 18700167}
-  _roundsController: {fileID: 18700168}
-  _ground: {fileID: 1016507374}
   _roundText: {fileID: 1387412203}
   _messagePanel: {fileID: 683065707}
   _exitButton: {fileID: 1459377170}
   _endCanvas: {fileID: 112910362}
   _resultValuesText: {fileID: 691835500}
-  _timer: {fileID: 1387379509}
   _fields:
   - {fileID: 1634494753}
   - {fileID: 1600081949}
@@ -185,20 +180,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &18700167
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 18700164}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff7d05cb298e1f64eaa8510db0ecd7d9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _playerTemplate: {fileID: 3902875679282417346, guid: 2fde4632077960e458345faa03c79c3d, type: 3}
-  _botTemplate: {fileID: 8074290453780480710, guid: dc86a4a9a31822a438c35e7744c0efc9, type: 3}
 --- !u!114 &18700168
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -619,6 +600,62 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 10, z: 13.33}
   m_Center: {x: -11.33, y: -5, z: 9.33}
+--- !u!1 &414646641
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 414646642}
+  - component: {fileID: 414646643}
+  m_Layer: 0
+  m_Name: GameEntryPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &414646642
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 414646641}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.4640942, y: -8.805648, z: -4.017949}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &414646643
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 414646641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa6e6e2eedc8bbb46a3b29dbc5570e96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gameController: {fileID: 18700165}
+  _roundsController: {fileID: 18700168}
+  _playerTemplate: {fileID: 3902875679282417346, guid: 2fde4632077960e458345faa03c79c3d, type: 3}
+  _botTemplate: {fileID: 8074290453780480710, guid: dc86a4a9a31822a438c35e7744c0efc9, type: 3}
+  _fields:
+  - {fileID: 2077561395}
+  - {fileID: 1634494753}
+  - {fileID: 213480352}
+  - {fileID: 1600081949}
+  - {fileID: 1026073584}
+  - {fileID: 1996043286}
+  _timerModel: {fileID: 1387379509}
 --- !u!1 &427091017
 GameObject:
   m_ObjectHideFlags: 0
@@ -2945,3 +2982,4 @@ SceneRoots:
   - {fileID: 1387379510}
   - {fileID: 112910366}
   - {fileID: 18700166}
+  - {fileID: 414646642}

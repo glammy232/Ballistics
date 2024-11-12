@@ -3,28 +3,32 @@
   "WorkspaceRootPath": "C:\\MainProjects\\Freelance\\Ballistics\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{DAA9FEEA-37CD-C57B-60BF-8896746782EE}|Assembly-CSharp.csproj|c:\\mainprojects\\freelance\\ballistics\\assets\\_project\\develop\\game\\characters\\bot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{DAA9FEEA-37CD-C57B-60BF-8896746782EE}|Assembly-CSharp.csproj|solutionrelative:assets\\_project\\develop\\game\\characters\\bot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{DAA9FEEA-37CD-C57B-60BF-8896746782EE}|Assembly-CSharp.csproj|C:\\MainProjects\\Freelance\\Ballistics\\assets\\_project\\develop\\game\\gamecontrollers\\characterscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DAA9FEEA-37CD-C57B-60BF-8896746782EE}|Assembly-CSharp.csproj|solutionrelative:assets\\_project\\develop\\game\\gamecontrollers\\characterscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{DAA9FEEA-37CD-C57B-60BF-8896746782EE}|Assembly-CSharp.csproj|c:\\mainprojects\\freelance\\ballistics\\assets\\_project\\develop\\game\\characters\\character.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{DAA9FEEA-37CD-C57B-60BF-8896746782EE}|Assembly-CSharp.csproj|C:\\MainProjects\\Freelance\\Ballistics\\assets\\_project\\develop\\game\\characters\\character.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{DAA9FEEA-37CD-C57B-60BF-8896746782EE}|Assembly-CSharp.csproj|solutionrelative:assets\\_project\\develop\\game\\characters\\character.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{DAA9FEEA-37CD-C57B-60BF-8896746782EE}|Assembly-CSharp.csproj|C:\\MainProjects\\Freelance\\Ballistics\\assets\\_project\\develop\\game\\gamecontrollers\\gamecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{DAA9FEEA-37CD-C57B-60BF-8896746782EE}|Assembly-CSharp.csproj|solutionrelative:assets\\_project\\develop\\game\\gamecontrollers\\gamecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{DAA9FEEA-37CD-C57B-60BF-8896746782EE}|Assembly-CSharp.csproj|C:\\MainProjects\\Freelance\\Ballistics\\assets\\_project\\develop\\game\\gamecontrollers\\characterscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{DAA9FEEA-37CD-C57B-60BF-8896746782EE}|Assembly-CSharp.csproj|solutionrelative:assets\\_project\\develop\\game\\gamecontrollers\\characterscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{DAA9FEEA-37CD-C57B-60BF-8896746782EE}|Assembly-CSharp.csproj|C:\\MainProjects\\Freelance\\Ballistics\\assets\\_project\\develop\\game\\characters\\bot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DAA9FEEA-37CD-C57B-60BF-8896746782EE}|Assembly-CSharp.csproj|solutionrelative:assets\\_project\\develop\\game\\characters\\bot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{DAA9FEEA-37CD-C57B-60BF-8896746782EE}|Assembly-CSharp.csproj|C:\\MainProjects\\Freelance\\Ballistics\\assets\\_project\\develop\\game\\gameentrypoint.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{DAA9FEEA-37CD-C57B-60BF-8896746782EE}|Assembly-CSharp.csproj|solutionrelative:assets\\_project\\develop\\game\\gameentrypoint.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{DAA9FEEA-37CD-C57B-60BF-8896746782EE}|Assembly-CSharp.csproj|C:\\MainProjects\\Freelance\\Ballistics\\assets\\_project\\develop\\game\\gamecontrollers\\configurations\\configurations.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{DAA9FEEA-37CD-C57B-60BF-8896746782EE}|Assembly-CSharp.csproj|c:\\mainprojects\\freelance\\ballistics\\assets\\_project\\develop\\menu\\complexityes\\complexityes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DAA9FEEA-37CD-C57B-60BF-8896746782EE}|Assembly-CSharp.csproj|solutionrelative:assets\\_project\\develop\\menu\\complexityes\\complexityes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DAA9FEEA-37CD-C57B-60BF-8896746782EE}|Assembly-CSharp.csproj|c:\\mainprojects\\freelance\\ballistics\\assets\\_project\\develop\\game\\gamecontrollers\\configurations\\configurations.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{DAA9FEEA-37CD-C57B-60BF-8896746782EE}|Assembly-CSharp.csproj|solutionrelative:assets\\_project\\develop\\game\\gamecontrollers\\configurations\\configurations.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DAA9FEEA-37CD-C57B-60BF-8896746782EE}|Assembly-CSharp.csproj|C:\\MainProjects\\Freelance\\Ballistics\\assets\\_project\\develop\\game\\gamecontrollers\\gamecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DAA9FEEA-37CD-C57B-60BF-8896746782EE}|Assembly-CSharp.csproj|solutionrelative:assets\\_project\\develop\\game\\gamecontrollers\\gamecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{DAA9FEEA-37CD-C57B-60BF-8896746782EE}|Assembly-CSharp.csproj|C:\\MainProjects\\Freelance\\Ballistics\\assets\\_project\\develop\\game\\field.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -38,17 +42,30 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 6,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 4,
+              "Title": "Complexityes.cs",
+              "DocumentMoniker": "C:\\MainProjects\\Freelance\\Ballistics\\Assets\\_Project\\Develop\\Menu\\Complexityes\\Complexityes.cs",
+              "RelativeDocumentMoniker": "Assets\\_Project\\Develop\\Menu\\Complexityes\\Complexityes.cs",
+              "ToolTip": "C:\\MainProjects\\Freelance\\Ballistics\\Assets\\_Project\\Develop\\Menu\\Complexityes\\Complexityes.cs",
+              "RelativeToolTip": "Assets\\_Project\\Develop\\Menu\\Complexityes\\Complexityes.cs",
+              "ViewState": "AQIAAAkAAAAAAAAAAAA+wCcAAAAsAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-11T08:37:54.894Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "Bot.cs",
               "DocumentMoniker": "C:\\MainProjects\\Freelance\\Ballistics\\Assets\\_Project\\Develop\\Game\\Characters\\Bot.cs",
               "RelativeDocumentMoniker": "Assets\\_Project\\Develop\\Game\\Characters\\Bot.cs",
               "ToolTip": "C:\\MainProjects\\Freelance\\Ballistics\\Assets\\_Project\\Develop\\Game\\Characters\\Bot.cs",
               "RelativeToolTip": "Assets\\_Project\\Develop\\Game\\Characters\\Bot.cs",
-              "ViewState": "AQIAAAgAAAAAAAAAAAAAwCgAAAAQAAAA",
+              "ViewState": "AQIAACgAAAAAAAAAAAAAAEQAAAAyAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-11-05T17:23:15.94Z",
               "EditorCaption": ""
@@ -61,22 +78,23 @@
               "RelativeDocumentMoniker": "Assets\\_Project\\Develop\\Game\\Characters\\Character.cs",
               "ToolTip": "C:\\MainProjects\\Freelance\\Ballistics\\Assets\\_Project\\Develop\\Game\\Characters\\Character.cs",
               "RelativeToolTip": "Assets\\_Project\\Develop\\Game\\Characters\\Character.cs",
-              "ViewState": "AQIAABsAAAAAAAAAAAAwwCsAAAAOAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAkwCsAAAAOAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-11-05T09:45:04.678Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 3,
               "Title": "GameEntryPoint.cs",
               "DocumentMoniker": "C:\\MainProjects\\Freelance\\Ballistics\\Assets\\_Project\\Develop\\Game\\GameEntryPoint.cs",
               "RelativeDocumentMoniker": "Assets\\_Project\\Develop\\Game\\GameEntryPoint.cs",
               "ToolTip": "C:\\MainProjects\\Freelance\\Ballistics\\Assets\\_Project\\Develop\\Game\\GameEntryPoint.cs",
               "RelativeToolTip": "Assets\\_Project\\Develop\\Game\\GameEntryPoint.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA4AAAAAAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABkAAAApAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-05T04:00:28.166Z"
+              "WhenOpened": "2024-11-05T04:00:28.166Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -86,37 +104,39 @@
               "RelativeDocumentMoniker": "Assets\\_Project\\Develop\\Game\\GameControllers\\Configurations\\Configurations.cs",
               "ToolTip": "C:\\MainProjects\\Freelance\\Ballistics\\Assets\\_Project\\Develop\\Game\\GameControllers\\Configurations\\Configurations.cs",
               "RelativeToolTip": "Assets\\_Project\\Develop\\Game\\GameControllers\\Configurations\\Configurations.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABAAAAAkAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAIAAAAXAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-04T16:11:29.206Z"
+              "WhenOpened": "2024-11-04T16:11:29.206Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 6,
               "Title": "GameController.cs",
               "DocumentMoniker": "C:\\MainProjects\\Freelance\\Ballistics\\Assets\\_Project\\Develop\\Game\\GameControllers\\GameController.cs",
               "RelativeDocumentMoniker": "Assets\\_Project\\Develop\\Game\\GameControllers\\GameController.cs",
               "ToolTip": "C:\\MainProjects\\Freelance\\Ballistics\\Assets\\_Project\\Develop\\Game\\GameControllers\\GameController.cs",
               "RelativeToolTip": "Assets\\_Project\\Develop\\Game\\GameControllers\\GameController.cs",
-              "ViewState": "AQIAAH0AAAAAAAAAAABRwIAAAAAAAAAA",
+              "ViewState": "AQIAAC8AAAAAAAAAAAAYwHoAAABBAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-11-03T08:04:15.635Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 0,
               "Title": "CharactersController.cs",
               "DocumentMoniker": "C:\\MainProjects\\Freelance\\Ballistics\\Assets\\_Project\\Develop\\Game\\GameControllers\\CharactersController.cs",
               "RelativeDocumentMoniker": "Assets\\_Project\\Develop\\Game\\GameControllers\\CharactersController.cs",
               "ToolTip": "C:\\MainProjects\\Freelance\\Ballistics\\Assets\\_Project\\Develop\\Game\\GameControllers\\CharactersController.cs",
               "RelativeToolTip": "Assets\\_Project\\Develop\\Game\\GameControllers\\CharactersController.cs",
-              "ViewState": "AQIAAE4AAAAAAAAAAADwv3gAAAAFAAAA",
+              "ViewState": "AQIAAAEAAAAAAAAAAAAkwCUAAAA0AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-03T08:03:50.557Z"
+              "WhenOpened": "2024-11-03T08:03:50.557Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "Field.cs",
               "DocumentMoniker": "C:\\MainProjects\\Freelance\\Ballistics\\Assets\\_Project\\Develop\\Game\\Field.cs",
               "RelativeDocumentMoniker": "Assets\\_Project\\Develop\\Game\\Field.cs",

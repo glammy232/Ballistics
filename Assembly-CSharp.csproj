@@ -67,6 +67,7 @@
     <Compile Include="Assets\_Project\Develop\Game\Characters\Player.cs" />
     <Compile Include="Assets\_Project\Develop\Game\Characters\InitializationValueObject.cs" />
     <Compile Include="Assets\_Project\Develop\Game\GameControllers\GameController.cs" />
+    <Compile Include="Assets\_Project\Develop\Menu\Complexityes\Complexityes.cs" />
     <Compile Include="Assets\_Project\Develop\Game\Utils\PlayerPlacemaker.cs" />
     <Compile Include="Assets\_Project\Develop\Game\GameControllers\Configurations\Configurations.cs" />
     <Compile Include="Assets\_Project\Develop\Game\Timer\TimerModel.cs" />
