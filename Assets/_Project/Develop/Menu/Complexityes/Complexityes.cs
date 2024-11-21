@@ -1,15 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class Complexityes : MonoBehaviour
 {
-    private int _easyLevel { get => PlayerPrefs.GetInt(nameof(_easyLevel), 0); set => PlayerPrefs.SetInt(nameof(_easyLevel), value); }
-    private int _normalLevel { get => PlayerPrefs.GetInt(nameof(_normalLevel), 0); set => PlayerPrefs.SetInt(nameof(_normalLevel), value); }
-    private int _hardLevel { get => PlayerPrefs.GetInt(nameof(_hardLevel), 0); set => PlayerPrefs.SetInt(nameof(_hardLevel), value); }
-    private int _hardcoreLevel { get => PlayerPrefs.GetInt(nameof(_hardcoreLevel), 0); set => PlayerPrefs.SetInt(nameof(_hardcoreLevel), value); }
-
+    private int _easyLevel => UserData.EasyLevel;
+    private int _normalLevel => UserData.NormalLevel;
+    private int _hardLevel => UserData.HardLevel;
+    private int _hardcoreLevel => UserData.HardcoreLevel;
     public static int NumberOfPlayers { get => PlayerPrefs.GetInt(nameof(NumberOfPlayers), 6); set => PlayerPrefs.SetInt(nameof(NumberOfPlayers), value); }
 
     public void Easy()

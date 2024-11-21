@@ -1,9 +1,7 @@
 using DG.Tweening;
 using System;
-using System.Collections;
 using TMPro;
 using UnityEngine;
-using static System.TimeZoneInfo;
 
 public abstract class Character : MonoBehaviour
 {
@@ -16,8 +14,29 @@ public abstract class Character : MonoBehaviour
         set
         {
             _kills = value;
+
+            if(TryGetComponent(out Player player))
+            {
+                GameController.Instance.MainPlayerKills = _kills;
+            }
         }
     }
+
+    private int _hits;
+
+    private int _shotsFired;
+    private int shotsFired
+    {
+        get => _shotsFired;
+        set
+        {
+            _shotsFired = value;
+
+            GameController.Instance.MainPlayerPersantageOfHits = _shotsFired;
+        }
+    }
+
+    public int PersentageOfHits => (int)((float)_hits / (float)shotsFired * 100);
 
     protected Field _field;
 
@@ -29,9 +48,10 @@ public abstract class Character : MonoBehaviour
     protected int _maxHealth;
     public int GetMaxHealth => _maxHealth;
 
-    private int _health;
+    protected int _health;
     public int GetHealth => _health;
-    public void SetHealth(int value)
+
+    public virtual void SetHealth(int value, Character killer)
     {
         _health = value;
 
@@ -39,9 +59,9 @@ public abstract class Character : MonoBehaviour
 
         if (value <= 0)
         {
-            GetComponent<Renderer>().material.color = Color.black;
+            GetComponentInChildren<Renderer>().material.color = Color.black;
 
-            //GameController.Instance.AddPlayerToKillHim(this, true);
+            GameController.Instance.GetCharactersController.KillCharacter(this, killer);
         }
     }
 
@@ -51,7 +71,7 @@ public abstract class Character : MonoBehaviour
 
         _damager = damager;
 
-        SetHealth(_health - damage);
+        SetHealth(_health - damage, damager);
 
         CanFire = true;
     }
@@ -75,7 +95,6 @@ public abstract class Character : MonoBehaviour
     [SerializeField] protected Bullet _poopTemplate;
 
     protected bool _hasPoop;
-
     protected virtual bool hasPoop
     {
         get => _hasPoop;
@@ -84,7 +103,7 @@ public abstract class Character : MonoBehaviour
         {
             _hasPoop = value;
 
-            if(value == true)
+            if (value == true)
             {
                 _field.ActivatePoopButtonObject();
                 _field.SetPoopButtonListener(delegate
@@ -94,8 +113,30 @@ public abstract class Character : MonoBehaviour
             }
         }
     }
+    public bool GetPoop => hasPoop;
 
-    public bool SetHasPoop(bool value) => hasPoop = value;
+    protected bool _hasHeart;
+    protected virtual bool hasHeart
+    {
+        get => _hasHeart;
+        set
+        {
+            _hasHeart = value;
+
+            if(value == true)
+            {
+                _field.ActivateHeartButtonObject();
+                _field.SetHeartButtonListener(delegate
+                {
+                    UseHeart();
+                });
+            }
+        }
+    }
+
+    public void SetHasPoop(bool value) => hasPoop = value;
+
+    public void SetHasHeart(bool value) => hasHeart = value;
 
     protected bool _nextProjectileIsPoop;
 
@@ -106,9 +147,6 @@ public abstract class Character : MonoBehaviour
         set
         {
             _canFire = value;
-
-            //if (value && GetID == GameController.Instance.GetCurrentCharacterID)
-              //  GetComponent<Renderer>().material.color = Color.green;
         }
     }
 
@@ -163,7 +201,7 @@ public abstract class Character : MonoBehaviour
 
         _maxHealth = valueObject.GetMaxHealth;
 
-        SetHealth(valueObject.GetMaxHealth);
+        SetHealth(valueObject.GetMaxHealth, null);
 
         speedKoaf = valueObject.GetSpeedKoaf;
 
@@ -180,6 +218,16 @@ public abstract class Character : MonoBehaviour
         _hasPoop = false;
 
         _nextProjectileIsPoop = true;
+    }
+
+    public virtual void UseHeart()
+    {
+        if (!hasHeart)
+            return;
+
+        hasHeart = false;
+
+        SetHealth(100, null);
     }
 
     public virtual void Fire()
@@ -201,7 +249,7 @@ public abstract class Character : MonoBehaviour
 
             if (_nextProjectileIsPoop)
             {
-                bullet = Instantiate(_poopTemplate, transform.position + new Vector3(0, transform.localScale.y / 2f + _bulletTemplate.transform.localScale.y / 2f, 0), Quaternion.identity);
+                bullet = Instantiate(_poopTemplate, transform.position + new Vector3(0, transform.localScale.y + _bulletTemplate.transform.localScale.y / 1.5f, 0), Quaternion.identity);
 
                 _nextProjectileIsPoop = false;
 
@@ -209,14 +257,14 @@ public abstract class Character : MonoBehaviour
             }
             else
             {
-                bullet = Instantiate(_bulletTemplate, transform.position + new Vector3(0, transform.localScale.y / 2f + _bulletTemplate.transform.localScale.y / 2f, 0), Quaternion.identity);
+                bullet = Instantiate(_bulletTemplate, transform.position + new Vector3(0, transform.localScale.y + _bulletTemplate.transform.localScale.y / 1.5f, 0), Quaternion.identity);
             }
 
             float speed = Vector3.Distance(_startTouchPosition, _lastTouchPosition) * speedKoaf;
 
             _startTouchPosition = _startTouchPosition - _lastTouchPosition;
 
-            Vector3 target = _lastTouchPosition; 
+            Vector3 target = _lastTouchPosition;
 
             _lastTouchPosition = Vector3.zero;
 
@@ -237,6 +285,8 @@ public abstract class Character : MonoBehaviour
             _startTouchPosition = Vector2.zero;
 
             _lastFireTime = 0;
+
+            shotsFired++;
         }
         else
         {

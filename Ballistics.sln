@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp-Editor-firstpass", "Assembly-CSharp-Editor-firstpass.csproj", "{B780E53F-4A2F-1CAF-A69A-DAAE9745553A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuGetForUnity", "NuGetForUnity.csproj", "{0CE0C10D-45C9-8285-46AB-9DD3E1028DA4}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CFXR.WelcomeScreen", "CFXR.WelcomeScreen.csproj", "{233719C2-515B-DC14-AD7D-CAC5F2A338B8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp-firstpass", "Assembly-CSharp-firstpass.csproj", "{BDF1C891-1A34-6382-E390-F514397CCB05}"
@@ -41,6 +43,10 @@ Global
 		{B780E53F-4A2F-1CAF-A69A-DAAE9745553A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B780E53F-4A2F-1CAF-A69A-DAAE9745553A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B780E53F-4A2F-1CAF-A69A-DAAE9745553A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0CE0C10D-45C9-8285-46AB-9DD3E1028DA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CE0C10D-45C9-8285-46AB-9DD3E1028DA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CE0C10D-45C9-8285-46AB-9DD3E1028DA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CE0C10D-45C9-8285-46AB-9DD3E1028DA4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{233719C2-515B-DC14-AD7D-CAC5F2A338B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{233719C2-515B-DC14-AD7D-CAC5F2A338B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{233719C2-515B-DC14-AD7D-CAC5F2A338B8}.Release|Any CPU.ActiveCfg = Release|Any CPU

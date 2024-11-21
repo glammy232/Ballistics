@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,15 +7,17 @@ public class RoundsController : MonoBehaviour
     {
         foreach (var character in characters)
         {
-            character.GetComponent<Renderer>().material.color = Color.white;
+            character.GetComponentInChildren<Renderer>().material.color = Color.green;
 
             if (character.TryGetComponent(out Bot bot))
-                bot.SetTargetCharacterToNull();
+                bot.SetTargetCharacter(null);
 
             character.CanFire = false;
+
+
         }
 
-        Bullet[] bullets = GameObject.FindObjectsOfType<Bullet>();
+        Bullet[] bullets = FindObjectsOfType<Bullet>();
 
         if (bullets.Length == 0)
             return;

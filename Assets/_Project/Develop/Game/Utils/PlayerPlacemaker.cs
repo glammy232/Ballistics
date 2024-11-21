@@ -13,7 +13,7 @@ public class PlayerPlacemaker
 
         int numOfProcessedPlayers = 0;
 
-        while(numOfProcessedPlayers != players.Length)
+        while (numOfProcessedPlayers != players.Length)
         {
             Vector3 offset = new Vector3(Random.Range(minWidthOffset, maxWidthOffset), 0, Random.Range(minHeightOffset, maxHeightOffset));
 
@@ -29,25 +29,15 @@ public class PlayerPlacemaker
 
     public void ArrangePlayers(List<Character> players)
     {
-        List<int> usedIDs = new List<int>();
-
-        for (int i = 0; i < 6; i++)
-        {
-            int j = i;
-            usedIDs.Add(j);
-        }
-
         for (int i = 0; i < players.Count; i++)
         {
             players[i].transform.position = players[i].GetField.transform.GetChild(0).position;
-
-            usedIDs.Remove(1);
         }
     }
 
     public void MovePlayersLittle(List<Character> players, BordersPlacement bordersPlacement)
     {
-        foreach(var player in players)
+        foreach (var player in players)
         {
             Vector3 offset = new Vector3(Random.Range(bordersPlacement.MinX, bordersPlacement.MaxX), 0, Random.Range(bordersPlacement.MinY, bordersPlacement.MaxY));
 
@@ -58,15 +48,15 @@ public class PlayerPlacemaker
 public class BordersPlacement
 {
     public float MaxX;
-    public float MaxY; 
-    public float MinX; 
+    public float MaxY;
+    public float MinX;
     public float MinY;
 
     public BordersPlacement(float maxX, float maxY, float minX, float minY)
     {
-        MaxX = maxX; 
-        MaxY = maxY; 
-        MinX = minX; 
+        MaxX = maxX;
+        MaxY = maxY;
+        MinX = minX;
         MinY = minY;
     }
 }

@@ -1,5 +1,3 @@
-using System.Security.Cryptography;
-
 public sealed class Player : Character
 {
     public override void Initialize(InitializationValueObject valueObject)
@@ -18,7 +16,7 @@ public sealed class Player : Character
 
         _maxHealth = valueObject.GetMaxHealth;
 
-        SetHealth(valueObject.GetMaxHealth);
+        SetHealth(valueObject.GetMaxHealth, null);
 
         speedKoaf = valueObject.GetSpeedKoaf;
 

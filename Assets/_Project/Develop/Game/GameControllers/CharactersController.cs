@@ -5,7 +5,12 @@ using UnityEngine;
 
 public class CharactersController
 {
+    public event Action OnCharacterKilled;
+    public event Action OnCharactersLost;
+
     private BotConfig _botConfig;
+
+    private GameConfig _gameConfig;
 
     private Player _playerTemplate;
 
@@ -15,16 +20,15 @@ public class CharactersController
     public List<Character> GetCharacters => _characters;
 
     private Character _currentCharacter;
-    public Character GetCurrentCharacter => _currentCharacter;
-
-    private int _lastCharacterId;
-
-    private int _killedCharacterID;
-
+   
     private List<Field> _fields;
+
+    private int _currentCharacterId = -1;
 
     public CharactersController(GameConfig gameConfig, BotConfig botConfig, Player playerTemplate, Bot botTemplate, List<Field> fields)
     {
+        _gameConfig = gameConfig;
+
         _botConfig = botConfig;
 
         _playerTemplate = playerTemplate;
@@ -35,13 +39,13 @@ public class CharactersController
 
         _characters = CreateCharacters(gameConfig);
 
-        _currentCharacter = SelectCurrentCharacter(0);
-
         HideFieldHealthBars();
 
         ArrangeCharacters(_characters);
 
         GivePoopToRandomCharacter(_characters);
+
+        GiveHeartToRandomCharacter(_characters);
     }
 
     public List<Character> CreateCharacters(GameConfig gameConfig)
@@ -94,7 +98,7 @@ public class CharactersController
         return characters;
     }
 
-    public void ArrangeCharacters(List<Character> characters)
+    private void ArrangeCharacters(List<Character> characters)
     {
         Transform[] charactersTransforms = new Transform[characters.Count];
 
@@ -113,21 +117,22 @@ public class CharactersController
         }
     }
 
-    public void GivePoopToRandomCharacter(List<Character> characters) => characters[UnityEngine.Random.Range(0, characters.Count)].SetHasPoop(true);
+    private void GivePoopToRandomCharacter(List<Character> characters) => characters[UnityEngine.Random.Range(0, characters.Count)].SetHasPoop(true);
 
-    public Character SelectCurrentCharacter(int currentRound)
+    private void GiveHeartToRandomCharacter(List<Character> characters)
     {
-        if (currentRound == 0)
-            return _characters.Find((ch) => ch.GetID == GetSortedCharacterIDs().Min());
-        else if (GetCurrentCharacter == null && _characters.Count > _lastCharacterId + 1)
-            return _characters.Find((ch) => ch.GetID == _lastCharacterId + 1);
-        else if (_lastCharacterId + 1 > _characters.Count)
-            return _characters[0];
-        else
-            return _characters[_lastCharacterId + 1];
+        int rand = UnityEngine.Random.Range(0, characters.Count);
+
+        if (characters[rand].GetPoop)
+        {
+            GiveHeartToRandomCharacter(characters);
+            return;
+        }
+
+        characters[rand].SetHasHeart(true);
     }
 
-    public Character GetRandomCharacter(Character execlude)
+    private Character GetRandomCharacter(Character execlude)
     {
         List<Character> newCharacters = new List<Character>();
 
@@ -145,52 +150,107 @@ public class CharactersController
     {
         if (GetMinHealthOfCharacters(execlude) == 100)
             return GetRandomCharacter(execlude);
-        
+
         return _characters.Find(x => x.GetHealth == GetMinHealthOfCharacters(execlude));
     }
 
-    public void KillCharacter()
+    public void KillCharacter(Character killed, Character killer)
     {
-        Character character = GetCharacterToKill();
+        if (killed == null)
+            killed = _currentCharacter;
 
-        character.GetField.HideHealthBar();
+        killed.GetField.HideHealthBar();
 
-        character.GetComponent<Renderer>().material.color = Color.black;
+        killed.GetComponentInChildren<Renderer>().material.color = Color.black;
 
-        _fields.Remove(character.GetField);
+        _fields.Remove(killed.GetField);
 
-        _characters.Remove(character);
+        _characters.Remove(killed);
 
-        GameObject.Destroy(character);
+        GameObject.Destroy(killed);
+
+        if (_characters.Count == 1)
+        {
+            OnCharactersLost?.Invoke();
+        }
+
+        if (killer != null)
+            killer.Kills++;
+
+        OnCharacterKilled?.Invoke();
     }
 
-    private Character GetCharacterToKill()
+    public Character GetNextCharacter()
     {
+        if (_currentCharacterId == GetCharacterIds().Count || _currentCharacterId == -1)
+        {
+            _currentCharacterId = GetCharacterIds().Min();
+
+            Debug.Log("Min ID");
+        }
+        else if (GetSortedCharacterIds().IndexOf(_currentCharacterId) < GetCharacterIds().Count)
+        {
+            for (int i = 0; i < GetSortedCharacterIds().Count; i++)
+            {
+                Debug.Log("CurrentId " + _currentCharacterId);
+          
+                if (_currentCharacterId < GetSortedCharacterIds()[i])
+                {
+                    Debug.Log("Sorted Id " + GetSortedCharacterIds()[i]);
+                    _currentCharacterId = GetSortedCharacterIds()[i];
+                    Debug.Log("Next " +_currentCharacterId);
+                    break;
+                }
+            }
+        }
+        else if (GetCharacterIds().Count <= 1)
+        {
+            Debug.LogError("Метод - GetNextCharacter. Кол-во игроков <= 1 ");
+        }
+        else
+        {
+            Debug.LogError("Метод - GetNextCharacter. Неизвестная ошибка в else");
+        }
+
         Character character = null;
 
-        if (GameController.Instance.GetTime <= 0)
-            character = _currentCharacter;
-        else
-            character = _characters.Find((x) => x.GetHealth == 0);
+        foreach (var field in _fields)
+        {
+            if (field.ParentCharacter.GetID == _currentCharacterId)
+            {
+                character = field.ParentCharacter;
+                _currentCharacterId = character.GetID; 
+                Debug.Log("Выбран игрок с ID: " + field.ParentCharacter.GetID);
+            }
+        }
 
         if (character == null)
-            throw new NullReferenceException("PROBLEM IN GetCharacterToKill Method");
+            Debug.LogError("Метод - GetNextCharacter. Возвращает null");
 
         return character;
     }
 
-    public List<int> GetSortedCharacterIDs()
+    private List<int> GetCharacterIds()
     {
-        List<int> charactersIDs = new List<int>();
+        List<int> Ids = new List<int>();
 
-        foreach (var character in _characters)
+        for (int i = 0; i < _fields.Count; i++)
         {
-            charactersIDs.Add(character.GetID);
+            int j = i;
+
+            Ids.Add(_fields[j].ParentCharacter.GetID);
         }
 
-        charactersIDs.Sort();
+        return Ids;
+    }
 
-        return charactersIDs;
+    private List<int> GetSortedCharacterIds()
+    {
+        List<int> Ids = GetCharacterIds();
+
+        Ids.Sort();
+
+        return Ids;
     }
 
     public int GetMinHealthOfCharacters(Character exclude)
@@ -213,5 +273,94 @@ public class CharactersController
             if (field.ParentCharacter == null)
                 field.HideHealthBar();
         }
+    }
+
+    public void MakeMainCharacter(Character character)
+    {
+        character.GetComponentInChildren<Renderer>().material.color = Color.red;
+
+        if (character.TryGetComponent(out Bot bot))
+        {
+            FindTargetCharacter(bot);
+        }
+
+        character.CanFire = true;
+
+        _currentCharacter = character;
+    }
+
+    public void MakeShootingCharacter(Character character)
+    {
+        character.CanFire = true;
+
+        if(character.TryGetComponent(out Bot bot))
+        {
+            FindTargetCharacter(bot);
+        }
+    }
+
+    public void MakeKilledCharacter(Character character)
+    {
+        character.GetComponent<Renderer>().material.color = Color.black;
+
+        character.CanFire = false;
+    }
+
+    public void MakeDefaultCharacter(Character character)
+    {
+        character.GetComponent<Renderer>().material.color = Color.white;
+
+        character.CanFire = false;
+    }
+
+    public void FindTargetCharacter(Bot bot)
+    {
+        switch (_gameConfig.Complexity)
+        {
+            case 0:
+                bot.SetTargetCharacter(GetNearestCharacter(bot));
+                break;
+            case 1:
+                bot.SetTargetCharacter(GetRandomCharacter(bot));
+                break;
+            case 2:
+                bot.SetTargetCharacter(GetCharacterWithMinHealth(bot));
+                break;
+            case 3:
+                bot.SetTargetCharacter(GetCharacterWithMinHealth(bot));
+                break;
+        }
+    }
+
+    private Character GetNearestCharacter(Bot bot)
+    {
+        if (_characters.Count <= 1)
+        {
+            Debug.LogWarning("Метод GetNearestCharacter return null");
+            return null;
+        }
+
+        Character ch = null;
+
+        List<float> distances = new List<float>();
+
+        foreach(var character in _characters)
+        {
+            if (character.GetID == bot.GetID)
+                continue;
+
+            distances.Add(Vector3.Distance(bot.transform.position, character.transform.position));
+        }
+
+        foreach(var character in _characters)
+        {
+            if (Vector3.Distance(bot.transform.position, character.transform.position) == distances.Min())
+                ch = character;
+        }
+
+        if (ch == null)
+            Debug.LogError("Метод GetNearestCharacter, ch is null");
+
+        return ch;
     }
 }

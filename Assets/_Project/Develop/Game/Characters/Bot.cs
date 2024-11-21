@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public sealed class Bot : Character
 {
@@ -10,10 +8,7 @@ public sealed class Bot : Character
 
     private BotConfig _config;
 
-    public void Initialize(BotConfig config)
-    {
-        _config = config;
-    }
+    public BotConfig GetConfig => _config;
 
     protected override bool hasPoop
     {
@@ -30,50 +25,71 @@ public sealed class Bot : Character
         }
     }
 
+    protected override bool hasHeart
+    {
+        get => _hasHeart;
+        set
+        {
+            _hasHeart = value;
+
+            if (value == true)
+            {
+                _field.ActivateHeartButtonObject();
+            }
+        }
+    }
+
     public override bool CanFire
     {
         get => _canFire;
         set
-        {            
+        {
             _canFire = value;
-
-            //if (value && GetID == GameController.Instance.GetCurrentCharacterID)
-              //  GetComponent<Renderer>().material.color = Color.green;
-
-            if (value == true)
-            {
-                if (_targetCharacter != null)
-                    return;
-
-                int rand = Random.Range(0, 2);
-
-                if (_gotDamage && GameController.Instance.GetCharacterWithMinHealth(this).GetHealth < 100)
-                {
-                    if(rand == 0)
-                        _targetCharacter = _damager;
-                    else
-                        _targetCharacter = GameController.Instance.GetCharacterWithMinHealth(this);
-                }
-                else if (_gotDamage && GameController.Instance.GetCharacterWithMinHealth(this).GetHealth == 100)
-                    _targetCharacter = _damager;
-                else if (!_gotDamage && GameController.Instance.GetCharacterWithMinHealth(this).GetHealth < 100)
-                {
-                    _targetCharacter = GameController.Instance.GetCharacterWithMinHealth(this);
-                }
-                else
-                {
-                    if(_targetCharacter == null)
-                        _targetCharacter = GameController.Instance.GetRandomCharacter(this);
-                }
-
-                Debug.Log(_targetCharacter.GetID);
-            }
         }
     }
 
     private Character _targetCharacter;
 
-    public void SetTargetCharacterToNull() => _targetCharacter = null;
+    public Character GetTargetCharacter => _targetCharacter;
+
+    public void Initialize(BotConfig config)
+    {
+        _config = config;
+    }
+
+    public void SetTargetCharacter(Character value) => _targetCharacter = value;
+
+    public override void SetHealth(int value, Character killer)
+    {
+        _health = value;
+
+        _field.UpdateHealthView(this);
+
+        if (value <= 0)
+        {
+            GetComponentInChildren<Renderer>().material.color = Color.black;
+
+            GameController.Instance.GetCharactersController.KillCharacter(this, killer);
+        }
+        if(GameController.Instance != null)
+        {
+            if (GameController.Instance.GameConfig.Complexity < 2)
+            {
+                int rand = Random.Range(0, 2);
+
+                if (rand == 0)
+                    UseHeart();
+            }
+            else if (value <= 10 && GameController.Instance.GameConfig.Complexity == 2)
+            {
+                UseHeart();
+            }
+            else if (value <= 10 && GameController.Instance.GameConfig.Complexity == 3)
+            {
+                UseHeart();
+            }
+        }
+    }
 
     public override void Fire()
     {
@@ -83,22 +99,40 @@ public sealed class Bot : Character
         if (_targetCharacter == null)
             return;
 
-        if (hasPoop && _targetCharacter.GetHealth <= 50)
+        if (hasPoop && _targetCharacter.GetHealth <= 50 && GameController.Instance.GameConfig.Complexity > 0)
         {
             UsePoop();
             _field.HidePoopButton();
+        }
+        else
+        {
+            int rand = Random.Range(0, 2);
+
+            if(rand == 0)
+            {
+                UseHeart();
+                _field.HideHeartButton();
+            }
         }
 
         _startTouchPosition = _targetCharacter.transform.position;
         _lastTouchPosition = transform.position;
 
-        if (Vector3.Distance(_startTouchPosition, _lastTouchPosition) > _minDistance && Vector3.Distance(_startTouchPosition, _lastTouchPosition) < _maxDistance && _lastFireTime > _fireCooldown + 1.5f)
+        int level = GameController.Instance.GameConfig.Complexity switch 
+        {
+            0 => UserData.EasyLevel,
+            1 => UserData.NormalLevel,
+            2 => UserData.HardLevel,
+            _ => UserData.HardcoreLevel,
+        };
+
+        if (Vector3.Distance(_startTouchPosition, _lastTouchPosition) > _minDistance && Vector3.Distance(_startTouchPosition, _lastTouchPosition) < _maxDistance && _lastFireTime > _fireCooldown + 1.5f - 0.08f * level)
         {
             Bullet bullet;
 
             if (_nextProjectileIsPoop)
             {
-                bullet = Instantiate(_poopTemplate, transform.position + new Vector3(0, transform.localScale.y / 2f + _bulletTemplate.transform.localScale.y / 2f, 0), Quaternion.identity);
+                bullet = Instantiate(_poopTemplate, transform.position + new Vector3(0, transform.localScale.y + _bulletTemplate.transform.localScale.y / 1.5f, 0), Quaternion.identity);
 
                 _nextProjectileIsPoop = false;
 
@@ -106,7 +140,7 @@ public sealed class Bot : Character
             }
             else
             {
-                bullet = Instantiate(_bulletTemplate, transform.position + new Vector3(0, transform.localScale.y / 2f + _bulletTemplate.transform.localScale.y / 2f, 0), Quaternion.identity);
+                bullet = Instantiate(_bulletTemplate, transform.position + new Vector3(0, transform.localScale.y + _bulletTemplate.transform.localScale.y / 1.5f, 0), Quaternion.identity);
             }
 
             float speed = Vector3.Distance(_startTouchPosition, _lastTouchPosition) * speedKoaf * Random.Range(MIN_DISTANCE_KOAF, MAX_DISTANCE_KOAF);

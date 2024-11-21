@@ -1,6 +1,3 @@
-
-using UnityEngine;
-
 public class InitializationValueObject
 {
     private readonly Field _field;
@@ -44,5 +41,5 @@ public class InitializationValueObject
         _maxHealth = maxHealth;
 
         _speedKoaf = speedKoaf;
-    }    
+    }
 }

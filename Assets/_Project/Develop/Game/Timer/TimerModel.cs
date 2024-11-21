@@ -63,7 +63,7 @@ public class TimerModel : MonoBehaviour, INotifyPropertyChanged
         NotifyPropertyChanged(nameof(_countTime));
     }
 
-    public void StopTimer() 
+    public void StopTimer()
     {
         _textColor = Color.white;
 

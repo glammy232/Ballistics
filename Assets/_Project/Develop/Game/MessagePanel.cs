@@ -24,7 +24,7 @@ public class MessagePanel : MonoBehaviour
     {
         _messageQueue.Enqueue(message);
 
-        if(_messageCycle == null)
+        if (_messageCycle == null)
             ShowMessage(_messageQueue.Dequeue());
     }
 

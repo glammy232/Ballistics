@@ -21,14 +21,8 @@ public class GameEntryPoint : MonoBehaviour
 
     private void Awake()
     {
-        GameConfig gameConfig = GameConfig;
+        CharactersController charactersController = new CharactersController(GameConfig, BotConfig, _playerTemplate, _botTemplate, _fields);
 
-        Debug.Log(gameConfig.Complexity);
-
-        BotConfig botConfig = BotConfig;
-
-        CharactersController charactersController = new CharactersController(gameConfig, botConfig, _playerTemplate, _botTemplate, _fields);
-
-        _gameController.Initialize(gameConfig, charactersController, _roundsController, _timerModel);
+        _gameController.Initialize(GameConfig, charactersController, _roundsController, _timerModel);
     }
 }
